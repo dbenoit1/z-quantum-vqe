@@ -12,7 +12,7 @@ from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
 
-class HEA_RY_CNOT_RY_Ansatz(Ansatz):
+class HF_Ansatz(Ansatz):
 
     supports_parametrized_circuits = True
     number_of_qubits = ansatz_property("number_of_qubits")
