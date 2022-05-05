@@ -52,10 +52,9 @@ class HF_Ansatz(Ansatz):
         for qubit_index in range(self.number_of_qubits):
 
             qubit_parameters = parameters[qubit_index : (qubit_index + 1)]
-            
-            myparam = qubit_parameters[0] *0.
-            
-            circuit += RY(myparam)(qubit_index)
+                        
+            circuit += RY(qubit_parameters[0])(qubit_index)
+            circuit += RY(-qubit_parameters[0])(qubit_index)
 
         return circuit
 
@@ -86,9 +85,9 @@ class HF_Ansatz(Ansatz):
 
 
         # Add RY(theta)
-        circuit_layer = self._build_rotational_subcircuit(
-            circuit_layer,
-            parameters[ self.number_of_qubits : 2 * self.number_of_qubits],
+        #circuit_layer = self._build_rotational_subcircuit(
+        #    circuit_layer,
+        #    parameters[ self.number_of_qubits : 2 * self.number_of_qubits],
         )
 
         return circuit_layer
@@ -131,7 +130,7 @@ class HF_Ansatz(Ansatz):
         """
         Returns number of parameters in the ansatz.
         """
-        return self.number_of_qubits * 2
+        return self.number_of_qubits 
 
     @property
     def symbols(self) -> List[sympy.Symbol]:
