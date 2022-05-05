@@ -88,7 +88,7 @@ class HF_Ansatz(Ansatz):
         #circuit_layer = self._build_rotational_subcircuit(
         #    circuit_layer,
         #    parameters[ self.number_of_qubits : 2 * self.number_of_qubits],
-        )
+        #)
 
         return circuit_layer
 
