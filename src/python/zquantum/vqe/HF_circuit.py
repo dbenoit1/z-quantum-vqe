@@ -100,10 +100,10 @@ class HF_Ansatz(Ansatz):
         for control, target in zip(
             qubit_ids[:-2:], qubit_ids[1::]
         ):  # loop over qubits 0, 1, 2, 3,...
-    #        if (control == 0):
-    #            circuit_layer += self._build_occ_cnot(circuit_layer, control,target)
-    #        else:
-            circuit_layer += CNOT(control, target)
+            if ((nb_occ >0) && ((control == 0) || (control == qubits/nb_occ) ):
+                circuit_layer += self._build_occ_cnot(circuit_layer, control,target)
+            else:
+                circuit_layer += CNOT(control, target)
 
         return circuit_layer
 
