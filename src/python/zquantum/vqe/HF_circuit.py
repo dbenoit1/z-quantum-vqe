@@ -36,6 +36,7 @@ class HF_Ansatz(Ansatz):
         super().__init__(number_of_layers)
         assert number_of_qubits % 2 == 0
         self._number_of_qubits = number_of_qubits
+        self._nb_occ = nb_occ
 
     def _build_rotational_subcircuit(
         self, circuit: Circuit, parameters: np.ndarray
