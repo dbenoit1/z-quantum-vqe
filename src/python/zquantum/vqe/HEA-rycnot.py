@@ -77,8 +77,8 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         qubit_ids = list(range(self.number_of_qubits))
         # Add CNOT(x, x+1) for x in even(qubits)
         for control, target in zip(
-            qubit_ids[::2], qubit_ids[1::2]
-        ):  # loop over qubits 0, 2, 4...
+            qubit_ids[:-2:], qubit_ids[1::]
+        ):  # loop over qubits 0, 1, 2, 3,...
             circuit_layer += CNOT(control, target)
 
         # Add RY(theta)
