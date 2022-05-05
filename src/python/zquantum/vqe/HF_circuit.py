@@ -52,7 +52,10 @@ class HF_Ansatz(Ansatz):
         for qubit_index in range(self.number_of_qubits):
 
             qubit_parameters = parameters[qubit_index : (qubit_index + 1)]
-            circuit += RY(0)(qubit_index)
+            
+            myparam = qubit_parameters[0] *0.
+            
+            circuit += RY(myparam)(qubit_index)
 
         return circuit
 
@@ -74,11 +77,13 @@ class HF_Ansatz(Ansatz):
         )
 
         qubit_ids = list(range(self.number_of_qubits))
-        # Add CNOT(x, x+1) for x in all(qubits)
+        # Add cancelled CNOT(x, x+1) + CNOT(x+1, x)for x in all(qubits)
         for control, target in zip(
             qubit_ids[:-2:], qubit_ids[1::]
         ):  # loop over qubits 0, 1, 2, 3,...
             circuit_layer += CNOT(control, target)
+            circuit_layer += CNOT( target, control)
+
 
         # Add RY(theta)
         circuit_layer = self._build_rotational_subcircuit(
