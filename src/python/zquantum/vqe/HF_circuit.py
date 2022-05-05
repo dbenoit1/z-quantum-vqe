@@ -16,6 +16,7 @@ class HF_Ansatz(Ansatz):
 
     supports_parametrized_circuits = True
     number_of_qubits = ansatz_property("number_of_qubits")
+    nb_occ = ansatz_property("nb_occ")
 
     def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int):
         """An ansatz implementation for the Hardware Efficient Quantum Compiling Ansatz
@@ -36,7 +37,6 @@ class HF_Ansatz(Ansatz):
         super().__init__(number_of_layers)
         assert number_of_qubits % 2 == 0
         self._number_of_qubits = number_of_qubits
-        assert nb_occ % 2 == 0
         self._nb_occ = nb_occ
 
     def _build_rotational_subcircuit(
