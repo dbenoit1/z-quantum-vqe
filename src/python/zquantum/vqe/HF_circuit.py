@@ -7,7 +7,7 @@ from typing import List, Optional
 import numpy as np
 import sympy
 from overrides import overrides
-from zquantum.core.circuits import CNOT, RY, Circuit
+from zquantum.core.circuits import X,CNOT, RY, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
@@ -17,7 +17,7 @@ class HF_Ansatz(Ansatz):
     supports_parametrized_circuits = True
     number_of_qubits = ansatz_property("number_of_qubits")
 
-    def __init__(self, number_of_layers: int, number_of_qubits: int):
+    def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int):
         """An ansatz implementation for the Hardware Efficient Quantum Compiling Ansatz
             used in https://arxiv.org/pdf/2011.12245.pdf
             modified to be only 0 - CNOT - 0
@@ -25,6 +25,7 @@ class HF_Ansatz(Ansatz):
         Args:
             number_of_layers: number of layers in the circuit.
             number_of_qubits: number of qubits in the circuit.
+            nb_occ: number of occupied states (spin orbitals, for example)
 
         Attributes:
             number_of_qubits: See Args
@@ -57,6 +58,25 @@ class HF_Ansatz(Ansatz):
             circuit += RY(-qubit_parameters[0])(qubit_index)
 
         return circuit
+    
+    def _build_occ_cnot(
+        self, circuit: Circuit, a:int, b:int
+    ) -> Circuit:
+        """Add a subcircuit that performs a cnot for occupied states X(a)-cnot(a,b)-X(a)
+
+        Args:
+            circuit: The circuit to append to
+            a,b: qubit number 
+
+        Returns:
+            circuit with added CNOT
+        """
+        # Add X-CNOT-X
+        circuit+=X(a)
+        circuit += CNOT(a, b)
+        circuit+=X(a)
+
+        return circuit
 
     def _build_circuit_layer(self, parameters: np.ndarray) -> Circuit:
         """Build circuit layer for the hardware efficient quantum compiling ansatz
@@ -76,19 +96,14 @@ class HF_Ansatz(Ansatz):
         )
 
         qubit_ids = list(range(self.number_of_qubits))
-        # Add cancelled CNOT(x, x+1) + CNOT(x+1, x)for x in all(qubits)
+        # Add  CNOT(x, x+1) for x in all (qubits)
         for control, target in zip(
             qubit_ids[:-2:], qubit_ids[1::]
         ):  # loop over qubits 0, 1, 2, 3,...
+    #        if (control == 0):
+    #            circuit_layer += self._build_occ_cnot(circuit_layer, control,target)
+    #        else:
             circuit_layer += CNOT(control, target)
-            circuit_layer += CNOT( target, control)
-
-
-        # Add RY(theta)
-        #circuit_layer = self._build_rotational_subcircuit(
-        #    circuit_layer,
-        #    parameters[ self.number_of_qubits : 2 * self.number_of_qubits],
-        #)
 
         return circuit_layer
 
