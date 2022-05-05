@@ -54,9 +54,9 @@ class HF_Ansatz(Ansatz):
         # Add RY(theta)
         for qubit_index in range(self.number_of_qubits):
 
-            qubit_parameters = parameters[qubit_index : (qubit_index + 1)]
-                        
-            circuit += RY(0*qubit_parameters[0])(qubit_index)
+            #qubit_parameters = parameters[qubit_index : (qubit_index + 1)]
+            angle=parameters[0]        
+            circuit += RY(0*angle)(qubit_index)
             #circuit += RY(-qubit_parameters[0])(qubit_index)
 
         return circuit
@@ -148,7 +148,8 @@ class HF_Ansatz(Ansatz):
         """
         Returns number of parameters in the ansatz.
         """
-        return self.number_of_qubits 
+        #return self.number_of_qubits 
+        return 1
 
     @property
     def symbols(self) -> List[sympy.Symbol]:
