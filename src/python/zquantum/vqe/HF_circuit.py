@@ -106,7 +106,7 @@ class HF_Ansatz(Ansatz):
       #          circuit_layer = self._build_occ_cnot(circuit_layer, control,target)
       #      else:
       #          circuit_layer += CNOT(control, target)
-            circuit_layer += CNOT(control, target)
+      #     circuit_layer += CNOT(control, target)
 
         return circuit_layer
 
