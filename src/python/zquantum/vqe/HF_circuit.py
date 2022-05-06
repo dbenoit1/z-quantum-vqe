@@ -11,13 +11,9 @@ from zquantum.core.circuits import X,CNOT, RY, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
-from zquantum.core.openfermion import (
-    FermionOperator,
-    uccsd_singlet_generator,
-    uccsd_singlet_paramsize,
-)
+from zquantum.core.openfermion import FermionOperator
 
-from .utils import build_hartree_fock_circuit
+from .utils import build_hartree_fock_circuit, exponentiate_fermion_operator
 
 class HF_Ansatz(Ansatz):
 
