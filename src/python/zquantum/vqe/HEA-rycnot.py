@@ -16,8 +16,9 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
 
     supports_parametrized_circuits = True
     number_of_qubits = ansatz_property("number_of_qubits")
+    nb_occ = ansatz_property("nb_occ")
 
-    def __init__(self, number_of_layers: int, number_of_qubits: int):
+    def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int)):
         """An ansatz implementation for the Hardware Efficient Quantum Compiling Ansatz
             used in https://arxiv.org/pdf/2011.12245.pdf
             modified to be only RY - CNOT - RY
@@ -25,16 +26,20 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         Args:
             number_of_layers: number of layers in the circuit.
             number_of_qubits: number of qubits in the circuit.
+            nb_occ: number of occupied states (spin orbitals, for example)
 
         Attributes:
             number_of_qubits: See Args
             number_of_layers: See Args
+            nb_occ: See Args
+
         """
         if number_of_layers <= 0:
             raise ValueError("number_of_layers must be a positive integer")
         super().__init__(number_of_layers)
         assert number_of_qubits % 2 == 0
         self._number_of_qubits = number_of_qubits
+        self._nb_occ = nb_occ
 
     def _build_rotational_subcircuit(
         self, circuit: Circuit, parameters: np.ndarray
@@ -68,6 +73,11 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
             Compiling Ansatz
         """
         circuit_layer = Circuit()
+        
+        # Hardwired JW HF ansatz instead (previous one has library issues)
+        for i in range(self.nb_occ):
+            #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
+            circuit_layer += X(i)
 
         # Add RY(theta)
         circuit_layer = self._build_rotational_subcircuit(
