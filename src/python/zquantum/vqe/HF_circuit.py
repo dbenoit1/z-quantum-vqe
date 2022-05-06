@@ -57,10 +57,10 @@ class HF_Ansatz(Ansatz):
         for qubit_index in range(self.number_of_qubits):
 
             qubit_parameters = parameters[qubit_index : (qubit_index + 1)]
-            circuit += RY(qubit_parameters[0]*zero)(qubit_index)
-            #circuit += RY(qubit_parameters[0])(qubit_index)
+            #circuit += RY(qubit_parameters[0]*zero)(qubit_index)
+            circuit += RY(qubit_parameters[0])(qubit_index)
             #this part doesnt work here
-            #circuit += RY(-qubit_parameters[0])(qubit_index)
+            circuit += RY(-qubit_parameters[0])(qubit_index)
 
         return circuit
     
