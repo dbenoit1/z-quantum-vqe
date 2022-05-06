@@ -7,7 +7,7 @@ from typing import List, Optional
 import numpy as np
 import sympy
 from overrides import overrides
-from zquantum.core.circuits import CNOT, RY, Circuit
+from zquantum.core.circuits import CNOT, RY, X, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
