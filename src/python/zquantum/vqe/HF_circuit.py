@@ -11,6 +11,7 @@ from zquantum.core.circuits import X,CNOT, RY, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
+from .utils import build_hartree_fock_circuit
 
 class HF_Ansatz(Ansatz):
 
@@ -92,7 +93,17 @@ class HF_Ansatz(Ansatz):
             Circuit containing a single layer of the Hardware Efficient Quantum
             Compiling Ansatz
         """
-        circuit_layer = Circuit()
+        #circuit_layer = Circuit()
+        
+        circuit_layer = build_hartree_fock_circuit(
+            self.number_of_qubits,
+            self.nb_occ/2,
+            self.nb_occ/2,
+            "Jordan-Wigner",
+            #self.number_of_alpha_electrons,
+            #self._number_of_beta_electrons,
+            #self._transformation,
+        )
 
         # Add RY(theta)
         circuit_layer = self._build_rotational_subcircuit(
