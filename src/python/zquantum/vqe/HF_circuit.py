@@ -11,6 +11,14 @@ from zquantum.core.circuits import X,CNOT, RY, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
+from zquantum.core.openfermion import (
+    FermionOperator,
+    InteractionOperator,
+    bravyi_kitaev,
+    get_fermion_operator,
+    jordan_wigner,
+)
+
 from .utils import build_hartree_fock_circuit
 
 class HF_Ansatz(Ansatz):
