@@ -13,10 +13,8 @@ from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
 from zquantum.core.openfermion import (
     FermionOperator,
-    InteractionOperator,
-    bravyi_kitaev,
-    get_fermion_operator,
-    jordan_wigner,
+    uccsd_singlet_generator,
+    uccsd_singlet_paramsize,
 )
 
 from .utils import build_hartree_fock_circuit
