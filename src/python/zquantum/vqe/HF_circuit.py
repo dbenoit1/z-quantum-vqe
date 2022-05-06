@@ -11,7 +11,7 @@ from zquantum.core.circuits import X,CNOT, RY, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
-from .utils import build_hartree_fock_circuit
+#from .utils import build_hartree_fock_circuit
 
 class HF_Ansatz(Ansatz):
 
