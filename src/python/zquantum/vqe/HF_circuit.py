@@ -2,7 +2,7 @@
 # © Copyright 2021 Zapata Computing Inc.
 # DMB mods to 0 - CNOT - 0 04/05/2022
 ################################################################################
-from typing import List, Optional
+from typing import List, Optional , Tuple
 
 import numpy as np
 import sympy
