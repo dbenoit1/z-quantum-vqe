@@ -2,7 +2,7 @@
 # © Copyright 2021 Zapata Computing Inc.
 # DMB mods to 0 - CNOT - 0 04/05/2022
 ################################################################################
-from typing import List, Optional , Tuple
+from typing import List, Optional 
 
 import numpy as np
 import sympy
@@ -11,9 +11,7 @@ from zquantum.core.circuits import X,CNOT, RY, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
-from zquantum.core.openfermion import FermionOperator
-
-from .utils import build_hartree_fock_circuit, exponentiate_fermion_operator
+from .utils import build_hartree_fock_circuit
 
 class HF_Ansatz(Ansatz):
 
@@ -95,9 +93,9 @@ class HF_Ansatz(Ansatz):
             Circuit containing a single layer of the Hardware Efficient Quantum
             Compiling Ansatz
         """
-        #circuit_layer = Circuit()
+        circuit_layer = Circuit()
         
-        circuit_layer = build_hartree_fock_circuit(
+        circuit_layer += build_hartree_fock_circuit(
             self.number_of_qubits,
             self.nb_occ/2,
             self.nb_occ/2,
