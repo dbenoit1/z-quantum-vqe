@@ -1,6 +1,9 @@
 ################################################################################
 # © Copyright 2021 Zapata Computing Inc.
-# DMB mods to 0 - CNOT - 0 04/05/2022
+# DMB mods to [theta] - [-theta] - [CNOT] 04/05/2022
+# TESTED WITH STATEVECTOR SIMS 06/05/2022 - works
+# REQUIRES A BETTER HF INITIAL STATE - CURRENTLY ONLY WORKS FOR JW MAPPING 
+# BUT IS HARDWIRED
 ################################################################################
 from typing import List, Optional 
 
@@ -32,6 +35,7 @@ class HF_Ansatz(Ansatz):
         Attributes:
             number_of_qubits: See Args
             number_of_layers: See Args
+            nb_occ: See Args
         """
         if number_of_layers <= 0:
             raise ValueError("number_of_layers must be a positive integer")
@@ -43,7 +47,7 @@ class HF_Ansatz(Ansatz):
     def _build_rotational_subcircuit(
         self, circuit: Circuit, parameters: np.ndarray
     ) -> Circuit:
-        """Add the subcircuit which includes several rotation gates acting on each qubit
+        """Add the subcircuit which includes two rotation gates acting on each qubit
 
         Args:
             circuit: The circuit to append to
@@ -81,8 +85,8 @@ class HF_Ansatz(Ansatz):
         return circuit
 
     def _build_circuit_layer(self, parameters: np.ndarray) -> Circuit:
-        """Build circuit layer for the hardware efficient quantum compiling ansatz
-
+        """Build circuit layer for the hardware efficient HF ansatz analog
+ 
         Args:
             parameters: The variational parameters (or symbolic parameters)
 
@@ -102,7 +106,7 @@ class HF_Ansatz(Ansatz):
  #           #self._transformation,
  #       )
 
-        # Hardwired JW HF ansatz
+        # Hardwired JW HF ansatz instead (previous one has library issues)
         for i in range(self.nb_occ):
             #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
             circuit_layer += X(i)
@@ -126,7 +130,7 @@ class HF_Ansatz(Ansatz):
 
     @overrides
     def _generate_circuit(self, parameters: Optional[np.ndarray] = None) -> Circuit:
-        """Builds the ansatz circuit (based on: 2011.12245, Fig. 1)
+        """Builds an HF ansatz circuit
 
         Args:
             params (numpy.ndarray): input parameters of the circuit (1d array).
