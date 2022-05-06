@@ -18,7 +18,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
     number_of_qubits = ansatz_property("number_of_qubits")
     nb_occ = ansatz_property("nb_occ")
 
-    def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int)):
+    def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int):
         """An ansatz implementation for the Hardware Efficient Quantum Compiling Ansatz
             used in https://arxiv.org/pdf/2011.12245.pdf
             modified to be only RY - CNOT - RY
