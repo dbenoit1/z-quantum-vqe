@@ -58,7 +58,7 @@ class HF_Ansatz(Ansatz):
             qubit_parameters = parameters[qubit_index : (qubit_index + 1)]
             #circuit += RY(qubit_parameters[0]*zero)(qubit_index)
             circuit += RY(qubit_parameters[0])(qubit_index)
-            #circuit += RY(-qubit_parameters[0])(qubit_index)
+            circuit += RY(-qubit_parameters[0])(qubit_index)
 
         return circuit
     
