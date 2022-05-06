@@ -95,15 +95,20 @@ class HF_Ansatz(Ansatz):
         """
         circuit_layer = Circuit()
         
-        circuit_layer += build_hartree_fock_circuit(
-            self.number_of_qubits,
-            self.nb_occ/2,
-            self.nb_occ/2,
-            "Jordan-Wigner",
-            #self.number_of_alpha_electrons,
-            #self._number_of_beta_electrons,
-            #self._transformation,
-        )
+ #       circuit_layer += build_hartree_fock_circuit(
+ #           self.number_of_qubits,
+ #           self.nb_occ/2,
+ #           self.nb_occ/2,
+ #           "Jordan-Wigner",
+ #           #self.number_of_alpha_electrons,
+ #           #self._number_of_beta_electrons,
+ #           #self._transformation,
+ #       )
+
+        # Hardwired JW HF ansatz
+        for i in range(self.nb_occ):
+            #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
+            circuit_layer += X(i)
 
         # Add RY(theta)
         circuit_layer = self._build_rotational_subcircuit(
