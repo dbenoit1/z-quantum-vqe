@@ -88,7 +88,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         #Slightly more hardwired approach:
         for i in range(self.number_of_qubits):
             target=i+1
-            if (target<self.number_of_qubits)):
+            if (target<self.number_of_qubits):
                 circuit_layer += CNOT(i, i+1)
         
        # qubit_ids = list(range(self.number_of_qubits))
