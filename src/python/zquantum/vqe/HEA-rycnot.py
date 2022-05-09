@@ -84,12 +84,19 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
             circuit_layer, parameters[: self.number_of_qubits]
         )
 
-        qubit_ids = list(range(self.number_of_qubits))
         # Add CNOT(x, x+1) for x in all(qubits)
-        for control, target in zip(
-            qubit_ids[:-2:], qubit_ids[1::]
-        ):  # loop over qubits 0, 1, 2, 3,...
-            circuit_layer += CNOT(control, target)
+        #Slightly more hardwired approach:
+        for i in range(self.number_of_qubits):
+            target=i+1
+            if (target<self.number_of_qubits)):
+                circuit_layer += CNOT(i, i+1)
+        
+       # qubit_ids = list(range(self.number_of_qubits))
+       # # Add CNOT(x, x+1) for x in all(qubits)
+       # for control, target in zip(
+       #     qubit_ids[:-2:], qubit_ids[1::]
+       # ):  # loop over qubits 0, 1, 2, 3,...
+       #     circuit_layer += CNOT(control, target)
 
         # Add RY(theta)
         circuit_layer = self._build_rotational_subcircuit(
