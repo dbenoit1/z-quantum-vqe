@@ -116,15 +116,26 @@ class HF_Ansatz(Ansatz):
             circuit_layer, parameters[: self.number_of_qubits]
         )
 
-        qubit_ids = list(range(self.number_of_qubits))
-        # Add  CNOT(x, x+1) for x in all (qubits)
-        for control, target in zip(qubit_ids[:-2:], qubit_ids[1::]):
-            # loop over qubits 0, 1, 2, 3,...
-            if((self.nb_occ >0) and (control<self.nb_occ)):
-                #each occupied state starting from 0 up to nb_occ (-1 coz python.. ) is a X so use X-CNOT-X
-                circuit_layer = self._build_not_cnot_not(circuit_layer, control,target)
-            else:
-                circuit_layer += CNOT(control, target)
+        # Add CNOT(x, x+1) for x in all(qubits)
+        #Slightly more hardwired approach:
+        for i in range(self.number_of_qubits):
+            target=i+1
+            if (target<self.number_of_qubits):
+                 if((self.nb_occ >0) and (i<self.nb_occ)):
+                    #each occupied state starting from 0 up to nb_occ (-1 coz python.. ) is a X so use X-CNOT-X
+                    circuit_layer = self._build_not_cnot_not(circuit_layer, i,i+1)
+                 else:
+                    circuit_layer += CNOT(i, i+1)
+                
+#        qubit_ids = list(range(self.number_of_qubits))
+#        # Add  CNOT(x, x+1) for x in all (qubits)
+#        for control, target in zip(qubit_ids[:-2:], qubit_ids[1::]):
+#            # loop over qubits 0, 1, 2, 3,...
+#            if((self.nb_occ >0) and (control<self.nb_occ)):
+#                #each occupied state starting from 0 up to nb_occ (-1 coz python.. ) is a X so use X-CNOT-X
+#                circuit_layer = self._build_not_cnot_not(circuit_layer, control,target)
+#            else:
+#                circuit_layer += CNOT(control, target)
 
         return circuit_layer
 
