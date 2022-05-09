@@ -1,6 +1,7 @@
 ################################################################################
 # © Copyright 2021 Zapata Computing Inc.
 # DMB mods to Ry - CNOT - Ry 04/05/2022
+# 09/05/22 DMB: TESTED AND WORKS WITH STATEVECTOR & NFT
 ################################################################################
 from typing import List, Optional
 
