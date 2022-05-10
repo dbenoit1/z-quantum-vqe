@@ -127,16 +127,6 @@ class HF_Ansatz(Ansatz):
                  else:
                     circuit_layer += CNOT(i, i+1)
                 
-#        qubit_ids = list(range(self.number_of_qubits))
-#        # Add  CNOT(x, x+1) for x in all (qubits)
-#        for control, target in zip(qubit_ids[:-2:], qubit_ids[1::]):
-#            # loop over qubits 0, 1, 2, 3,...
-#            if((self.nb_occ >0) and (control<self.nb_occ)):
-#                #each occupied state starting from 0 up to nb_occ (-1 coz python.. ) is a X so use X-CNOT-X
-#                circuit_layer = self._build_not_cnot_not(circuit_layer, control,target)
-#            else:
-#                circuit_layer += CNOT(control, target)
-
         return circuit_layer
 
     @overrides
