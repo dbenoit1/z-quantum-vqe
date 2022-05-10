@@ -4,6 +4,9 @@
 # TESTED WITH STATEVECTOR SIMS 06/05/2022 - works
 # REQUIRES A BETTER HF INITIAL STATE - CURRENTLY ONLY WORKS FOR JW MAPPING 
 # BUT IS HARDWIRED
+# CURRENTLY GENERIC HS INITIALISATION THROWS AN ERROR
+# cannot import name 'bravyi_kitaev' from 'zquantum.core.openfermion'
+# SO REVERTING TO HARDWIRED OPTION
 ################################################################################
 from typing import List, Optional 
 
@@ -14,7 +17,7 @@ from zquantum.core.circuits import X,CNOT, RY, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
-from .utils import build_hartree_fock_circuit
+# from .utils import build_hartree_fock_circuit
 
 class HF_Ansatz(Ansatz):
 
@@ -96,21 +99,17 @@ class HF_Ansatz(Ansatz):
         """
         circuit_layer = Circuit()
         
-        circuit_layer += build_hartree_fock_circuit(
-            number_of_qubits=self.number_of_qubits,
-            number_of_alpha_electrons=self.nb_occ/2,
-            number_of_beta_electrons=self.nb_occ/2,
-            transformation="Jordan-Wigner",
-        )
- #           #self.number_of_alpha_electrons,
- #           #self._number_of_beta_electrons,
- #           #self._transformation,
- #       )
+#        circuit_layer += build_hartree_fock_circuit(
+#            number_of_qubits=self.number_of_qubits,
+#            number_of_alpha_electrons=self.nb_occ/2,
+#            number_of_beta_electrons=self.nb_occ/2,
+#            transformation="Jordan-Wigner",
+#        )
 
-#        # Hardwired JW HF ansatz instead (previous one has library issues)
-#        for i in range(self.nb_occ):
-#            #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
-#            circuit_layer += X(i)
+        # Hardwired JW HF ansatz instead (previous one has library issues)
+        for i in range(self.nb_occ):
+            #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
+            circuit_layer += X(i)
 
         # Add RY(theta)
         circuit_layer = self._build_rotational_subcircuit(
