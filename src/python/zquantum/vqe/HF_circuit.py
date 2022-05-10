@@ -43,7 +43,7 @@ class HF_Ansatz(Ansatz):
         if number_of_layers <= 0:
             raise ValueError("number_of_layers must be a positive integer")
         super().__init__(number_of_layers)
-        assert number_of_qubits % 2 == 0
+       # assert number_of_qubits % 2 == 0
         self._number_of_qubits = number_of_qubits
         self._nb_occ = nb_occ
 
