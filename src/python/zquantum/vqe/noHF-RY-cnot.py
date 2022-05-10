@@ -22,17 +22,14 @@ class NOHF_RY_CNOT_RY_Ansatz(Ansatz):
         """An ansatz implementation for the Hardware Efficient Quantum Compiling Ansatz
             used in https://arxiv.org/pdf/2011.12245.pdf
             modified to be only RY - CNOT - RY
-
         Args:
             number_of_layers: number of layers in the circuit.
             number_of_qubits: number of qubits in the circuit.
             nb_occ: number of occupied states (spin orbitals, for example)
-
         Attributes:
             number_of_qubits: See Args
             number_of_layers: See Args
             nb_occ: See Args
-
         """
         if number_of_layers <= 0:
             raise ValueError("number_of_layers must be a positive integer")
@@ -45,11 +42,9 @@ class NOHF_RY_CNOT_RY_Ansatz(Ansatz):
         self, circuit: Circuit, parameters: np.ndarray
     ) -> Circuit:
         """Add the subcircuit which includes several rotation gates acting on each qubit
-
         Args:
             circuit: The circuit to append to
             parameters: The variational parameters (or symbolic parameters)
-
         Returns:
             circuit with added rotational sub-layer
         """
@@ -64,10 +59,8 @@ class NOHF_RY_CNOT_RY_Ansatz(Ansatz):
 
     def _build_circuit_layer(self, parameters: np.ndarray) -> Circuit:
         """Build circuit layer for the hardware efficient quantum compiling ansatz
-
         Args:
             parameters: The variational parameters (or symbolic parameters)
-
         Returns:
             Circuit containing a single layer of the Hardware Efficient Quantum
             Compiling Ansatz
@@ -79,13 +72,13 @@ class NOHF_RY_CNOT_RY_Ansatz(Ansatz):
             circuit_layer, parameters[: self.number_of_qubits]
         )
 
-        qubit_ids = list(range(self.number_of_qubits))
         # Add CNOT(x, x+1) for x in all(qubits)
-        for control, target in zip(
-            qubit_ids[:-2:], qubit_ids[1::]
-        ):  # loop over qubits 0, 1, 2, 3,...
-            circuit_layer += CNOT(control, target)
-
+        #Slightly more hardwired approach:
+        for i in range(self.number_of_qubits):
+            target=i+1
+            if (target<self.number_of_qubits):
+                circuit_layer += CNOT(i, i+1)
+     
         # Add RY(theta)
         circuit_layer = self._build_rotational_subcircuit(
             circuit_layer,
@@ -97,10 +90,8 @@ class NOHF_RY_CNOT_RY_Ansatz(Ansatz):
     @overrides
     def _generate_circuit(self, parameters: Optional[np.ndarray] = None) -> Circuit:
         """Builds the ansatz circuit (based on: 2011.12245, Fig. 1)
-
         Args:
             params (numpy.ndarray): input parameters of the circuit (1d array).
-
         Returns:
             Circuit
         """
