@@ -4,7 +4,7 @@
 # TESTED WITH STATEVECTOR SIMS 06/05/2022 - works
 # REQUIRES A BETTER HF INITIAL STATE - CURRENTLY ONLY WORKS FOR JW MAPPING 
 # BUT IS HARDWIRED
-# CURRENTLY GENERIC HS INITIALISATION THROWS AN ERROR
+# CURRENTLY GENERIC HF INITIALISATION THROWS AN ERROR
 # cannot import name 'bravyi_kitaev' from 'zquantum.core.openfermion'
 # SO REVERTING TO HARDWIRED OPTION
 ################################################################################
