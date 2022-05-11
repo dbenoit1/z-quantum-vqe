@@ -75,6 +75,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         circuit_layer = Circuit()
         
         # Hardwired JW HF ansatz instead (previous one has library issues)
+        # set to zero to bypass HF init
         for i in range(self.nb_occ):
             #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
             circuit_layer += X(i)
