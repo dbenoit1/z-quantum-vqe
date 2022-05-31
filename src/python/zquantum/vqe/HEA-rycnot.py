@@ -109,11 +109,11 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         # set to zero to bypass HF init
         for i in range(self.nb_occ):
             #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
-            circuit_layer += X(i)
+            circuit += X(i)
 
         # Add RY(theta)
-        circuit_layer = self._build_rotational_subcircuit(
-            circuit_layer, parameters[: self.number_of_qubits]
+        circuit = self._build_rotational_subcircuit(
+            circuit, parameters[: self.number_of_qubits]
         )
 
         for layer_index in range(self.number_of_layers):
