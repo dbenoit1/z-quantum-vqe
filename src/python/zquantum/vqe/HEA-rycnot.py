@@ -113,7 +113,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
 
         # Add RY(theta)
         circuit = self._build_rotational_subcircuit(
-            circuit, parameters[: self.number_of_qubits]
+            circuit, parameters[0: self.number_of_qubits]
         )
 
         for layer_index in range(self.number_of_layers):
