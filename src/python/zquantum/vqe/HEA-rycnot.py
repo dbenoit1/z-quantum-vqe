@@ -19,9 +19,9 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
     nb_occ = ansatz_property("nb_occ")
 
     def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int):
-        """An ansatz implementation for the Hardware Efficient Quantum Compiling Ansatz
-            used in https://arxiv.org/pdf/2011.12245.pdf
-            modified to be only RY - CNOT - RY
+        """An ansatz implementation of the Hardware Efficient Ansatz
+            used in 10.1021/acs.jctc.1c00091
+            -HF - RY - [CNOT - RY]n -
 
         Args:
             number_of_layers: number of layers in the circuit.
@@ -63,14 +63,13 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         return circuit
 
     def _build_circuit_layer(self, parameters: np.ndarray) -> Circuit:
-        """Build circuit layer for the hardware efficient quantum compiling ansatz
+        """Build circuit layer for the hardware efficient ansatz
 
         Args:
             parameters: The variational parameters (or symbolic parameters)
 
         Returns:
-            Circuit containing a single layer of the Hardware Efficient Quantum
-            Compiling Ansatz
+            Circuit containing a single layer of the Hardware Efficient Ansatz
         """
         circuit_layer = Circuit()
         
@@ -91,7 +90,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
 
     @overrides
     def _generate_circuit(self, parameters: Optional[np.ndarray] = None) -> Circuit:
-        """Builds the ansatz circuit (based on: 2011.12245, Fig. 1)
+        """Builds the ansatz circuit (based on: 10.1021/acs.jctc.1c00091, Fig. 1)
 
         Args:
             params (numpy.ndarray): input parameters of the circuit (1d array).
