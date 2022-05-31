@@ -72,7 +72,8 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
             Circuit containing a single layer of the Hardware Efficient Quantum
             Compiling Ansatz
         """
-      
+        circuit_layer = Circuit()
+        
         # Add CNOT(x, x+1) for x in all(qubits)
         #Slightly more hardwired approach:
         for i in range(self.number_of_qubits):
