@@ -34,7 +34,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
             nb_occ: See Args
 
         """
-        if number_of_layers <= 0:
+        if number_of_layers < 0:
             raise ValueError("number_of_layers must be a positive integer")
         super().__init__(number_of_layers)
         #assert number_of_qubits % 2 == 0
@@ -115,15 +115,16 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         circuit = self._build_rotational_subcircuit(
             circuit, parameters[0: self.number_of_qubits]
         )
-
-        for layer_index in range(self.number_of_layers):
-            circuit += self._build_circuit_layer(
+        
+        if (self.number_of_layers>0):
+            for layer_index in range(self.number_of_layers):
+                circuit += self._build_circuit_layer(
                 parameters[
                     layer_index
                     * self.number_of_params_per_layer : (layer_index + 1)
                     * self.number_of_params_per_layer
-                ]
-            )
+                    ]
+                )
         return circuit
 
     @property
@@ -131,14 +132,14 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         """
         Returns number of parameters in the ansatz.
         """
-        return self.number_of_params_per_layer * self.number_of_layers
+        return self.number_of_qubits+self.number_of_params_per_layer * self.number_of_layers
 
     @property
     def number_of_params_per_layer(self) -> int:
         """
-        Returns number of parameters in the ansatz.
+        Returns number of parameters in the layer.
         """
-        return self.number_of_qubits * 2
+        return self.number_of_qubits 
 
     @property
     def symbols(self) -> List[sympy.Symbol]:
