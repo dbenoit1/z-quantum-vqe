@@ -120,9 +120,9 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         if (self.number_of_layers>0):
             for layer_index in range(self.number_of_layers):
                 circuit += self._build_circuit_layer(
-                parameters[
+                parameters[self.number_of_qubits+
                     layer_index
-                    * self.number_of_params_per_layer : (layer_index + 1)
+                    * self.number_of_params_per_layer : self.number_of_qubits+(layer_index + 1)
                     * self.number_of_params_per_layer
                     ]
                 )
