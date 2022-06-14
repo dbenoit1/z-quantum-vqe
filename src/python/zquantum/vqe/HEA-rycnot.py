@@ -40,6 +40,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         #assert number_of_qubits % 2 == 0
         self._number_of_qubits = number_of_qubits
         self._nb_occ = nb_occ
+        print(number_of_qubits, nb_occ)
 
     def _build_rotational_subcircuit(
         self, circuit: Circuit, parameters: np.ndarray
@@ -83,7 +84,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         # Add RY(theta)
         circuit_layer = self._build_rotational_subcircuit(
             circuit_layer,
-            parameters[ self.number_of_qubits : 2 * self.number_of_qubits],
+            parameters[ 0 : self.number_of_qubits],
         )
 
         return circuit_layer
