@@ -87,7 +87,7 @@ class HF_Ansatz(Ansatz):
 
         return circuit
 
-    def _build_circuit_layer(self, parameters: np.ndarray) -> Circuit:
+    def _build_circuit_layer(self, parameters: np.ndarray,occupied_qubit_list) -> Circuit:
         """Build circuit layer for the hardware efficient HF ansatz analog
  
         Args:
@@ -109,8 +109,8 @@ class HF_Ansatz(Ansatz):
         for i in range(self.number_of_qubits):
             target=i+1
             if (target<self.number_of_qubits):
-                 if((self.nb_occ >0) and (i<self.nb_occ)):
-                    #each occupied state starting from 0 up to nb_occ (-1 coz python.. ) is a X so use X-CNOT-X
+                 if(occupied_qubit_list(i)==1):
+                    #each occupied state is a X so use X-CNOT-X
                     circuit_layer = self._build_not_cnot_not(circuit_layer, i,i+1)
                  else:
                     circuit_layer += CNOT(i, i+1)
@@ -139,14 +139,16 @@ class HF_Ansatz(Ansatz):
             transformation="Jordan-Wigner",
         )
         
+        #Keep track of which qubits are occupied (X) in occupied_qubit_list (0 is unocupied, 1 occupied)
+        occupied_qubit_list=np.zeros(self.number_of_qubits)
         print(circuit)
-        print(circuit.operations)
+        
         for gates in circuit.operations:
-            print(gates.qubit_indices)
+            # extract occupied qubit index
             myval=gates.qubit_indices[0]
-            print(myval,type(myval))
-
-        print(circuit.to_unitary())
+            # set occupied marker to 1
+            occupied_qubit_list[myval]=1
+            print("occupied qubit: ",myval)
 
        # # Hardwired JW HF ansatz instead (previous one has library issues)
        # for i in range(self.nb_occ):
@@ -160,7 +162,8 @@ class HF_Ansatz(Ansatz):
                     layer_index
                     * self.number_of_params_per_layer : (layer_index + 1)
                     * self.number_of_params_per_layer
-                ]
+                ],
+                occupied_qubit_list
             )
         return circuit
 
