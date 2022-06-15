@@ -139,6 +139,8 @@ class HF_Ansatz(Ansatz):
             transformation="Jordan-Wigner",
         )
         
+        print(circuit)
+        
         print(circuit.to_unitary())
 
        # # Hardwired JW HF ansatz instead (previous one has library issues)
