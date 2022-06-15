@@ -138,6 +138,8 @@ class HF_Ansatz(Ansatz):
             number_of_alpha_electrons=self.nb_occ//2,number_of_beta_electrons=self.nb_occ//2,
             transformation="Jordan-Wigner",
         )
+        
+        print(circuit.to_text_diagram())
 
        # # Hardwired JW HF ansatz instead (previous one has library issues)
        # for i in range(self.nb_occ):
