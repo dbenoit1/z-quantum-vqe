@@ -24,6 +24,8 @@ class HF_Ansatz(Ansatz):
     supports_parametrized_circuits = True
     number_of_qubits = ansatz_property("number_of_qubits")
     nb_occ = ansatz_property("nb_occ")
+    transformation = ansatz_property("transformation")
+
 
     def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int):
         """An ansatz implementation for the Hardware Efficient Quantum Compiling Ansatz
@@ -46,6 +48,7 @@ class HF_Ansatz(Ansatz):
        # assert number_of_qubits % 2 == 0
         self._number_of_qubits = number_of_qubits
         self._nb_occ = nb_occ
+        self._transformation = transformation
 
     def _build_rotational_subcircuit(
         self, circuit: Circuit, parameters: np.ndarray
@@ -136,7 +139,7 @@ class HF_Ansatz(Ansatz):
         #Start with HF state
         circuit += build_hartree_fock_circuit(number_of_qubits=self.number_of_qubits,
             number_of_alpha_electrons=self.nb_occ//2,number_of_beta_electrons=self.nb_occ//2,
-            transformation="Jordan-Wigner",
+            transformation=self.transformation,
         )
         
         #Keep track of which qubits are occupied (X) in occupied_qubit_list (0 is unocupied, 1 occupied)
