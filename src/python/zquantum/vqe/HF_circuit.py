@@ -135,7 +135,7 @@ class HF_Ansatz(Ansatz):
         circuit = Circuit()
         #Start with HF state
         circuit += build_hartree_fock_circuit(number_of_qubits=self.number_of_qubits,
-            number_of_alpha_electrons=self.nb_occ/2,number_of_beta_electrons=self.nb_occ/2,
+            number_of_alpha_electrons=self.nb_occ//2,number_of_beta_electrons=self.nb_occ//2,
             transformation="Jordan-Wigner",
         )
 
