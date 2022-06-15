@@ -143,7 +143,7 @@ class HF_Ansatz(Ansatz):
         print(circuit.operations)
         for gates in circuit.operations:
             print(gates.qubit_indices)
-            myval=gates.qubit_indices
+            myval=gates.qubit_indices[0]
             print(myval,type(myval))
 
         print(circuit.to_unitary())
