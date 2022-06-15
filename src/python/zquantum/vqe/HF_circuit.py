@@ -140,6 +140,7 @@ class HF_Ansatz(Ansatz):
         )
         
         print(circuit)
+        print(circuit.operations)
         
         print(circuit.to_unitary())
 
