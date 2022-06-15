@@ -27,7 +27,7 @@ class HF_Ansatz(Ansatz):
     transformation = ansatz_property("transformation")
 
 
-    def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int):
+    def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int, transformation: str):
         """An ansatz implementation for the Hardware Efficient Quantum Compiling Ansatz
             used in https://arxiv.org/pdf/2011.12245.pdf
             modified to be only Ry(+theta) => Ry(-Theta) => IdCNOT
