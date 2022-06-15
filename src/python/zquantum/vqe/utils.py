@@ -7,12 +7,13 @@ import numpy as np
 import sympy
 from zquantum.core.circuits import Circuit, X
 from zquantum.core.evolution import time_evolution
-from zquantum.core.openfermion import (
+from zquantum.core.openfermion.ops import (
     FermionOperator,
-    InteractionOperator,
-    bravyi_kitaev,
+    InteractionOperator)
+from zquantum.core.openfermion.transforms import(
     get_fermion_operator,
     jordan_wigner,
+    bravyi_kitaev,
     symmetry_conserving_bravyi_kitaev
 )
 
