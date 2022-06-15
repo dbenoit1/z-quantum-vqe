@@ -13,6 +13,7 @@ from zquantum.core.openfermion import (
     bravyi_kitaev,
     get_fermion_operator,
     jordan_wigner,
+    symmetry_conserving_bravyi_kitaev
 )
 
 
@@ -104,10 +105,18 @@ def build_hartree_fock_circuit(
         transformed_op = jordan_wigner(fermion_op)
     elif transformation == "Bravyi-Kitaev":
         transformed_op = bravyi_kitaev(fermion_op, n_qubits=number_of_qubits)
+    elif transformation == "BK-2qbr":
+        #Setting number of orbitals (qubits)
+        active_orbitals=number_of_qubits
+        #Setting number of electrons (fermions)
+        active_fermions=number_of_alpha_electrons+number_of_beta_electrons
+        transformed_op = symmetry_conserving_bravyi_kitaev(fermion_op,
+                                                           active_orbitals=active_orbitals,
+                                                           active_fermions=active_fermions)
     else:
         raise RuntimeError(
-            f"{transformation} is not a supported transformation. Jordan-Wigner and "
-            "Bravyi-Kitaev are supported at this time."
+            f"{transformation} is not a supported transformation. Jordan-Wigner, "
+            "Bravyi-Kitaev and reduced Bravyi-Kitaev are supported at this time."
         )
     term = next(iter(transformed_op.terms.items()))
     for op in term[0]:
