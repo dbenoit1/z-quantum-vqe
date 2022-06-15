@@ -99,18 +99,6 @@ class HF_Ansatz(Ansatz):
         """
         circuit_layer = Circuit()
         
-        circuit_layer += build_hartree_fock_circuit(
-            number_of_qubits=self.number_of_qubits,
-            number_of_alpha_electrons=self.nb_occ/2,
-            number_of_beta_electrons=self.nb_occ/2,
-            transformation="Jordan-Wigner",
-        )
-
-       # # Hardwired JW HF ansatz instead (previous one has library issues)
-       # for i in range(self.nb_occ):
-       #     #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
-       #     circuit_layer += X(i)
-
         # Add RY(theta)
         circuit_layer = self._build_rotational_subcircuit(
             circuit_layer, parameters[: self.number_of_qubits]
@@ -145,6 +133,18 @@ class HF_Ansatz(Ansatz):
         assert len(parameters) == self.number_of_params
 
         circuit = Circuit()
+        #Start with HF state
+        circuit += build_hartree_fock_circuit(number_of_qubits=self.number_of_qubits,
+            number_of_alpha_electrons=self.nb_occ/2,number_of_beta_electrons=self.nb_occ/2,
+            transformation="Jordan-Wigner",
+        )
+
+       # # Hardwired JW HF ansatz instead (previous one has library issues)
+       # for i in range(self.nb_occ):
+       #     #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
+       #     circuit += X(i)
+
+        #Then layers of R[+theta]-R[-theta]-CNOTS-
         for layer_index in range(self.number_of_layers):
             circuit += self._build_circuit_layer(
                 parameters[
