@@ -136,8 +136,14 @@ class HF_Ansatz(Ansatz):
         assert len(parameters) == self.number_of_params
 
         circuit = Circuit()
+        
         #Start with HF state
-        circuit += build_hartree_fock_circuit(number_of_qubits=self.number_of_qubits,
+        original_nb_qubits=self.number_of_qubits
+        #check for reduced BK transformation (needs an extra 2 qubits first)
+        if (self.transformation=='BK-2qbr'):
+            original_nb_qubits+=2
+            
+        circuit += build_hartree_fock_circuit(number_of_qubits=original_nb_qubits,
             number_of_alpha_electrons=self.nb_occ//2,number_of_beta_electrons=self.nb_occ//2,
             transformation=self.transformation,
         )
