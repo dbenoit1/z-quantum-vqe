@@ -141,7 +141,9 @@ class HF_Ansatz(Ansatz):
         
         print(circuit)
         print(circuit.operations)
-        
+        for gates in circuit.operations:
+            print(gates.qubit_indices)
+
         print(circuit.to_unitary())
 
        # # Hardwired JW HF ansatz instead (previous one has library issues)
