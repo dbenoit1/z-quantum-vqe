@@ -153,12 +153,14 @@ class HF_Ansatz(Ansatz):
         
         print(circuit)
         
+        #This loops over the operations in the circuit and those whould only be Xgates for the occupied qubits
         for gates in circuit.operations:
             # extract occupied qubit index
             myval=gates.qubit_indices[0]
             # set occupied marker to 1 to represent its state
             if (occupied_qubit_list[myval]==0):
-                #was 0 and now flipped to 1
+                # Here we are just being careful that we dont erase a qubit that was already set
+                # was 0 and now flipped to 1
                 occupied_qubit_list[myval]=1
                 print("X operation on qubit: "+str(myval))
            
