@@ -128,7 +128,9 @@ def build_hartree_fock_circuit(
         print(op)
         if op[1] != "Z":
             circuit += X(op[0])
-            
+    ## TEST!!
+    circuit = Circuit(n_qubits=(number_of_qubits-2))
+    circuit += X(1)
     print("HF circuit--")
     print(circuit)
     print("HF circuit--")
