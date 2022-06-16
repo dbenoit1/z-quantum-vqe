@@ -126,14 +126,12 @@ def build_hartree_fock_circuit(
     print(term)
     for op in term[0]:
         print(op)
+        #
+        # This is a departure from previous code that woudl assign an X gate for all "non Z" gates
+        # However that heuristic doesn't work for reduced BK transformations, so we have to be more 
+        # restrictive and only put X gates where there are no Z and no Y gates
+        #
         if ((op[1] != "Z") and (op[1] != "Y")):
             circuit += X(op[0])
-    ## TEST!! hack - all X
-    #circuit = Circuit(n_qubits=(number_of_qubits-2))
-    #for i in range((number_of_qubits-2)):
-    #    circuit += X(i)
-
-    print("HF circuit--")
-    print(circuit)
-    print("HF circuit--")
+            
     return circuit
