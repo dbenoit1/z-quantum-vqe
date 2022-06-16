@@ -156,9 +156,17 @@ class HF_Ansatz(Ansatz):
         for gates in circuit.operations:
             # extract occupied qubit index
             myval=gates.qubit_indices[0]
-            # set occupied marker to 1
-            occupied_qubit_list[myval]=1
-            print("occupied qubit: "+str(myval))
+            # set occupied marker to 1/0 ro represent its state
+            if (occupied_qubit_list[myval]==0):
+                #was 0 and now flipped to 1
+                occupied_qubit_list[myval]=1
+            else:
+                #was already occupied and now flipped back
+                occupied_qubit_list[myval]=0
+            print("X operation on qubit: "+str(myval))
+           
+        print("full occupation map")
+        print(occupied_qubit_list)
 
        # # Hardwired JW HF ansatz instead (previous one has library issues)
        # for i in range(self.nb_occ):
