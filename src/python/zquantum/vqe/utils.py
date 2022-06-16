@@ -134,7 +134,7 @@ def build_hartree_fock_circuit(
         if (op[1] != "Z"):
             if (transformation != "BK-2qbr"):
                 circuit += X(op[0])
-            elif (op[1] != "Y")):
+            elif (op[1] != "Y"):
                 circuit += X(op[0])
             
     return circuit
