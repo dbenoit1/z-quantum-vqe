@@ -114,6 +114,9 @@ def build_hartree_fock_circuit(
         transformed_op = symmetry_conserving_bravyi_kitaev(fermion_op,
                                                            active_orbitals=active_orbitals,
                                                            active_fermions=active_fermions)
+        #BK reduction removes two qubits!
+        circuit = Circuit(n_qubits=(number_of_qubits-2))
+
     else:
         raise RuntimeError(
             f"{transformation} is not a supported transformation. Jordan-Wigner, "
@@ -123,4 +126,8 @@ def build_hartree_fock_circuit(
     for op in term[0]:
         if op[1] != "Z":
             circuit += X(op[0])
+            
+    print("HF circuit--\/")
+    print(circuit)
+    print("HF circuit --/\")
     return circuit
