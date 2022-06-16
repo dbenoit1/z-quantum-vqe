@@ -127,7 +127,7 @@ def build_hartree_fock_circuit(
         if op[1] != "Z":
             circuit += X(op[0])
             
-    print("HF circuit--\/")
+    print("HF circuit--")
     print(circuit)
-    print("HF circuit --/\")
+    print("HF circuit--")
     return circuit
