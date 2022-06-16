@@ -125,9 +125,9 @@ def build_hartree_fock_circuit(
     term = next(iter(transformed_op.terms.items()))
     print(term)
     for op in term[0]:
-        print(op)
         #
-        # This is a departure from previous code that woudl assign an X gate for all "non Z" gates
+        # This is a departure from previous code that woudl assign an X gate for all "non Z" gates.
+        # The approach is still in place for JW and BK.
         # However that heuristic doesn't work for reduced BK transformations, so we have to be more 
         # restrictive and only put X gates where there are no Z and no Y gates
         #
