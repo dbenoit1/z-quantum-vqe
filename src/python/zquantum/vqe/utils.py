@@ -130,7 +130,7 @@ def build_hartree_fock_circuit(
             circuit += X(op[0])
     ## TEST!!
     circuit = Circuit(n_qubits=(number_of_qubits-2))
-    circuit += X(1)
+    circuit += X(0)
     print("HF circuit--")
     print(circuit)
     print("HF circuit--")
