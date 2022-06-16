@@ -123,7 +123,9 @@ def build_hartree_fock_circuit(
             "Bravyi-Kitaev and reduced Bravyi-Kitaev are supported at this time."
         )
     term = next(iter(transformed_op.terms.items()))
+    print(term)
     for op in term[0]:
+        print(op)
         if op[1] != "Z":
             circuit += X(op[0])
             
