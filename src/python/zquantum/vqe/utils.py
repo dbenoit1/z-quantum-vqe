@@ -131,7 +131,10 @@ def build_hartree_fock_circuit(
         # However that heuristic doesn't work for reduced BK transformations, so we have to be more 
         # restrictive and only put X gates where there are no Z and no Y gates
         #
-        if ((op[1] != "Z") and (op[1] != "Y")):
-            circuit += X(op[0])
+        if (op[1] != "Z"):
+            if (transformation != "BK-2qbr"):
+                circuit += X(op[0])
+            elif (op[1] != "Y")):
+                circuit += X(op[0])
             
     return circuit
