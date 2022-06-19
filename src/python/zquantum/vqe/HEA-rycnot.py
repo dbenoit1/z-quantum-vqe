@@ -12,13 +12,20 @@ from zquantum.core.circuits import CNOT, RY, X, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
+from .utils import build_hartree_fock_circuit
+
 class HEA_RY_CNOT_RY_Ansatz(Ansatz):
 
     supports_parametrized_circuits = True
     number_of_qubits = ansatz_property("number_of_qubits")
     nb_occ = ansatz_property("nb_occ")
+    transformation = ansatz_property("transformation")
 
-    def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int):
+    def __init__(self, number_of_layers: int,
+                 number_of_qubits: int, 
+                 nb_occ: int, 
+                 transformation: str = "Jordan-Wigner",
+                ):
         """An ansatz implementation of the Hardware Efficient Ansatz
             used in 10.1021/acs.jctc.1c00091
             -HF - RY - [CNOT - RY]n -
@@ -27,12 +34,13 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
             number_of_layers: number of layers in the circuit.
             number_of_qubits: number of qubits in the circuit.
             nb_occ: number of occupied states (spin orbitals, for example)
+            tranformation: Mapping transformation (JW/BK/BK-2qbr), default JW
 
         Attributes:
             number_of_qubits: See Args
             number_of_layers: See Args
             nb_occ: See Args
-
+            transformation: string
         """
         if number_of_layers < 0:
             raise ValueError("number_of_layers must be a positive integer")
@@ -40,6 +48,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         #assert number_of_qubits % 2 == 0
         self._number_of_qubits = number_of_qubits
         self._nb_occ = nb_occ
+        self._transformation = transformation
         print(number_of_qubits, nb_occ)
 
     def _build_rotational_subcircuit(
@@ -106,11 +115,22 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
 
         circuit = Circuit()
                 
-        # Hardwired JW HF ansatz instead (previous one has library issues)
-        # set to zero to bypass HF init
-        for i in range(self.nb_occ):
-            #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
-            circuit += X(i)
+        ## Hardwired JW HF ansatz instead (previous one has library issues)
+        ## set to zero to bypass HF init
+        #for i in range(self.nb_occ):
+        #    #adds a not (i.e. |1>) for each occupied state starting from 0 up to nb_occ (-1 coz python.. )
+        #    circuit += X(i)
+        
+        #Start with HF state is number of electrons are given
+        if (self.nb_occ>0):
+            original_nb_qubits=self.number_of_qubits
+            #check for reduced BK transformation (needs an extra 2 qubits first)
+            if (self.transformation=='BK-2qbr'):
+                original_nb_qubits+=2
+            
+            circuit += build_hartree_fock_circuit(number_of_qubits=original_nb_qubits,
+                number_of_alpha_electrons=self.nb_occ//2,number_of_beta_electrons=self.nb_occ//2,
+                transformation=self.transformation,
 
         # Add RY(theta)
         circuit = self._build_rotational_subcircuit(
