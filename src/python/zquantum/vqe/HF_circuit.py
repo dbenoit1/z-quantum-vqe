@@ -2,11 +2,7 @@
 # © Copyright 2021 Zapata Computing Inc.
 # DMB mods to [theta] - [-theta] - [CNOT] 04/05/2022
 # TESTED WITH STATEVECTOR SIMS 06/05/2022 - works
-# REQUIRES A BETTER HF INITIAL STATE - CURRENTLY ONLY WORKS FOR JW MAPPING 
-# BUT IS HARDWIRED
-# CURRENTLY GENERIC HF INITIALISATION THROWS AN ERROR
-# cannot import name 'bravyi_kitaev' from 'zquantum.core.openfermion'
-# SO REVERTING TO HARDWIRED OPTION
+# Now supports JW/BK/BK-2qbr
 ################################################################################
 from typing import List, Optional 
 
@@ -27,7 +23,11 @@ class HF_Ansatz(Ansatz):
     transformation = ansatz_property("transformation")
 
 
-    def __init__(self, number_of_layers: int, number_of_qubits: int, nb_occ: int, transformation: str):
+    def __init__(self, number_of_layers: int, 
+                 number_of_qubits: int, 
+                 nb_occ: int, 
+                 transformation: str = "Jordan-Wigner"
+                ):
         """An ansatz implementation for the Hardware Efficient Quantum Compiling Ansatz
             used in https://arxiv.org/pdf/2011.12245.pdf
             modified to be only Ry(+theta) => Ry(-Theta) => IdCNOT
@@ -36,11 +36,14 @@ class HF_Ansatz(Ansatz):
             number_of_layers: number of layers in the circuit.
             number_of_qubits: number of qubits in the circuit.
             nb_occ: number of occupied states (spin orbitals, for example)
+            tranformation: Mapping transformation (JW/BK/BK-2qbr), default JW
 
         Attributes:
             number_of_qubits: See Args
             number_of_layers: See Args
             nb_occ: See Args
+                        transformation: string
+
         """
         if number_of_layers <= 0:
             raise ValueError("number_of_layers must be a positive integer")
