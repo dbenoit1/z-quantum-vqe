@@ -131,6 +131,8 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
             circuit += build_hartree_fock_circuit(number_of_qubits=original_nb_qubits,
                 number_of_alpha_electrons=self.nb_occ//2,number_of_beta_electrons=self.nb_occ//2,
                 transformation=self.transformation)
+            print("RY-CNOT-RY ansatz HF start")
+            print(circuit)
 
         # Add RY(theta)
         circuit = self._build_rotational_subcircuit(
