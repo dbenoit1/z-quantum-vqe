@@ -11,7 +11,6 @@ from overrides import overrides
 from zquantum.core.circuits import CNOT, RY, X, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
-from orquestra.integrations.cirq.conversions._circuit_conversions import export_to_cirq
 
 from .utils import build_hartree_fock_circuit
 
@@ -151,7 +150,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
                 )
                 
         #print circuit?
-        print( export_to_cirq(circuit))
+        print(circuit)
         
         return circuit
 
