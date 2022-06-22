@@ -11,6 +11,7 @@ from overrides import overrides
 from zquantum.core.circuits import CNOT, RY, X, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
+from icecream import ic
 
 from .utils import build_hartree_fock_circuit
 
@@ -148,6 +149,10 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
                     * self.number_of_params_per_layer
                     ]
                 )
+                
+        #print circuit?
+        ic(circuit)
+        
         return circuit
 
     @property
