@@ -104,8 +104,10 @@ def build_hartree_fock_circuit(
     fermion_op = FermionOperator(tuple(op_list), 1.0)
     if transformation == "Jordan-Wigner":
         transformed_op = jordan_wigner(fermion_op)
+        qubit_set=np.zeros(number_of_qubits)
     elif transformation == "Bravyi-Kitaev":
         transformed_op = bravyi_kitaev(fermion_op, n_qubits=number_of_qubits)
+        qubit_set=np.zeros(number_of_qubits)
     elif transformation == "BK-2qbr":
         #Setting number of orbitals (qubits)
         active_orbitals=number_of_qubits
@@ -116,6 +118,7 @@ def build_hartree_fock_circuit(
                                                            active_fermions=active_fermions)
         #BK reduction removes two qubits!
         circuit = Circuit(n_qubits=(number_of_qubits-2))
+        qubit_set=np.zeros(number_of_qubits-2)
 
     else:
         raise RuntimeError(
@@ -124,6 +127,7 @@ def build_hartree_fock_circuit(
         )
     term = next(iter(transformed_op.terms.items()))
     print(term)
+    
     for op in term[0]:
         #
         # This is a departure from previous code that woudl assign an X gate for all "non Z" gates.
@@ -131,10 +135,20 @@ def build_hartree_fock_circuit(
         # However that heuristic doesn't work for reduced BK transformations, so we have to be more 
         # restrictive and only put X gates where there are no Z and no Y gates
         #
+        #if (op[1] != "Z"):
+        #    if (transformation != "BK-2qbr"):
+        #        circuit += X(op[0])
+        #    elif (op[1] != "Y"):
+        #        circuit += X(op[0])
+                
+        # However that heuristic doesn't work for reduced BK transformations, so we have to be more 
+        # careful and ensure that we are not doubling the number of X gates
+        #
         if (op[1] != "Z"):
-            if (transformation != "BK-2qbr"):
+            # Check if the X operator is already set for this qubit (avoids double setting XX)
+            if(qubit_set[op[0]]==0):
                 circuit += X(op[0])
-            elif (op[1] != "Y"):
-                circuit += X(op[0])
-            
+                qubit_set[op[0]]+=1
+        print(qubit_set)
+        
     return circuit
