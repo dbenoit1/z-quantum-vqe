@@ -156,7 +156,7 @@ def build_hartree_fock_circuit(
                     qubit_set[qubitindex]=1
                     alphas+=1
                     qubitindex+=2
-             if betas < number_of_beta_electrons:
+            if betas < number_of_beta_electrons:
                 #set opccupation for i
                     circuit += X(qubitindex)
                     qubit_set[qubitindex]=1
