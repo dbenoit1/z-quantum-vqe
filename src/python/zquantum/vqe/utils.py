@@ -140,7 +140,30 @@ def build_hartree_fock_circuit(
             if(qubit_set[op[0]]==0):
                 circuit += X(op[0])
                 qubit_set[op[0]]+=1
+    
+    #Separate setup for JW/qiskit (uses interleaved spins)
+    if transformation == "qiskit":
+        circuit = Circuit(n_qubits=number_of_qubits)
+        qubit_set=np.zeros(number_of_qubits) # Array to keep track of occupied qubits
+        
+        alphas=0
+        betas=0
+        qbitindex=0
+        while qubitindex < (number_of_qubits):
+            if alphas < number_of_alpha_electrons:
+                #set opccupation for i
+                    circuit += X(qubitindex)
+                    qubit_set[qubitindex]=1
+                    alphas+=1
+                    qubitindex+=2
+             if betas < number_of_beta_electrons:
+                #set opccupation for i
+                    circuit += X(qubitindex)
+                    qubit_set[qubitindex]=1
+                    betas+=1
+                    qubitindex+=2
+    
     # Print list of "switched" on qubits
     print(qubit_set)
-        
+       
     return circuit
