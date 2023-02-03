@@ -185,6 +185,9 @@ class HF_Ansatz(Ansatz):
                 ],
                 occupied_qubit_list
             )
+        print("final ansatz") 
+        print(circuit)
+
         return circuit
 
     @property
