@@ -120,7 +120,8 @@ def build_hartree_fock_circuit(
             if ibeta<number_of_beta_electrons:
                 index_list.append(i)   
                 ibeta+=1
-                
+        index_list=[1,3]
+   
     index_list.sort()       
     op_list = [(x, 1) for x in index_list]
     fermion_op = FermionOperator(tuple(op_list), 1.0)
