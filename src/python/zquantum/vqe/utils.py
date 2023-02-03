@@ -103,6 +103,10 @@ def build_hartree_fock_circuit(
     if transformation == "qiskit":
         #ordering needed to use qiskit occupation scheme 
         #A-A-_-_-B-B_-_
+        
+        #clear the old list
+        index_list = []
+
         #alpha spins section 
         ialpha=0
         for i in range(0,number_of_qubits//2):
