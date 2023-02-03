@@ -99,10 +99,28 @@ def build_hartree_fock_circuit(
         index_list.append(index)
     for index in beta_indexes[:number_of_beta_electrons]:
         index_list.append(index)
-    index_list.sort()
+    
+    if transformation == "qiskit":
+        #ordering needed to use qiskit occupation scheme 
+        #A-A-_-_-B-B_-_
+        #alpha spins section 
+        ialpha=0
+        for i in range(0,number_of_qubits//2):
+            if ialpha<number_of_alpha_electrons:
+                index_list.append(i)
+                ialpha+=1
+                
+        #beta spins section
+        ibeta=0
+        for i in range(number_of_qubits//2,number_of_qubits):
+            if ibeta<number_of_beta_electrons:
+                index_list.append(i)   
+                ibeta+=1
+                
+    index_list.sort()       
     op_list = [(x, 1) for x in index_list]
     fermion_op = FermionOperator(tuple(op_list), 1.0)
-    if transformation == "Jordan-Wigner":
+    if transformation == "Jordan-Wigner" or transformation == "qiskit" :
         transformed_op = jordan_wigner(fermion_op)
         qubit_set=np.zeros(number_of_qubits) # Array to keep track of occupied qubits
     elif transformation == "Bravyi-Kitaev":
@@ -141,7 +159,7 @@ def build_hartree_fock_circuit(
                 circuit += X(op[0])
                 qubit_set[op[0]]+=1
     
-    # Print list of "switched" on qubits
+    # Print list of "switched on" qubits
     print(qubit_set)
        
     return circuit
