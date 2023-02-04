@@ -107,20 +107,21 @@ def build_hartree_fock_circuit(
         #clear the old list
         index_list = []
 
+        #REMEMBER THAT THE ORDER IS REVERSED!
         #alpha spins section 
         ialpha=0
-        for i in range(0,number_of_qubits//2):
+        for i in range(number_of_qubits,number_of_qubits//2,-1):
             if ialpha<number_of_alpha_electrons:
-                index_list.append(i)
+                index_list.append(i-1)
                 ialpha+=1
                 
         #beta spins section
         ibeta=0
-        for i in range(number_of_qubits//2,number_of_qubits):
+        for i in range(number_of_qubits//2,0,-1):
             if ibeta<number_of_beta_electrons:
-                index_list.append(i)   
+                index_list.append(i-1)   
                 ibeta+=1
-        index_list=[1,3]
+        ###index_list=[1,3]
    
     index_list.sort()       
     op_list = [(x, 1) for x in index_list]
