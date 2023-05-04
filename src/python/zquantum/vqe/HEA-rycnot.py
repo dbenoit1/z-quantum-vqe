@@ -26,6 +26,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
                  number_of_qubits: int, 
                  nb_occ: int, 
                  transformation: str = "Jordan-Wigner",
+                 occupied_qubit_list: List[int],
                 ):
         """An ansatz implementation of the Hardware Efficient Ansatz
             used in 10.1021/acs.jctc.1c00091
@@ -50,6 +51,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         self._number_of_qubits = number_of_qubits
         self._nb_occ = nb_occ
         self._transformation = transformation
+        self._occupied_qubit_list=occupied_qubit_list
         print(number_of_qubits, nb_occ)
 
     def _build_rotational_subcircuit(
