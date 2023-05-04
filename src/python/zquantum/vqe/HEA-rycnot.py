@@ -134,30 +134,29 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
                 transformation=self.transformation)
             print("RY-CNOT-RY ansatz HF start")
             print(circuit)
+             #Keep track of which qubits are occupied (X) in occupied_qubit_list (0 is unocupied, 1 occupied)
+            occupied_qubit_list=np.zeros(self.number_of_qubits)
+        
+            print(circuit)
+        
+            #This loops over the operations in the circuit and those whould only be Xgates for the occupied qubits
+            for gates in circuit.operations:
+             # extract occupied qubit index
+                myval=gates.qubit_indices[0]
+                # set occupied marker to 1 to represent its state
+                if (occupied_qubit_list[myval]==0):
+                # Here we are just being careful that we dont erase a qubit that was already set
+                # was 0 and now flipped to 1
+                    occupied_qubit_list[myval]=1
+                    print("X operation on qubit: "+str(myval))
+           
+            print("full occupation map")
+            print(occupied_qubit_list)
 
         # Add RY(theta)
         circuit = self._build_rotational_subcircuit(
             circuit, parameters[0: self.number_of_qubits]
         )
-        
-        #Keep track of which qubits are occupied (X) in occupied_qubit_list (0 is unocupied, 1 occupied)
-        occupied_qubit_list=np.zeros(self.number_of_qubits)
-        
-        print(circuit)
-        
-        #This loops over the operations in the circuit and those whould only be Xgates for the occupied qubits
-        for gates in circuit.operations:
-            # extract occupied qubit index
-            myval=gates.qubit_indices[0]
-            # set occupied marker to 1 to represent its state
-            if (occupied_qubit_list[myval]==0):
-                # Here we are just being careful that we dont erase a qubit that was already set
-                # was 0 and now flipped to 1
-                occupied_qubit_list[myval]=1
-                print("X operation on qubit: "+str(myval))
-           
-        print("full occupation map")
-        print(occupied_qubit_list)
         
         if (self.number_of_layers>0):
             for layer_index in range(self.number_of_layers):
