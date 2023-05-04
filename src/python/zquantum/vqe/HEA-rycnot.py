@@ -188,7 +188,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         return self.number_of_qubits 
     
     @property
-    def occupied_qubit_list(self) -> List[int]:
+    def list_occupied_qubit(self) -> List[int]:
         """
         Returns a list of occupied qubits
         """
