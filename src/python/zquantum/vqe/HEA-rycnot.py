@@ -26,7 +26,6 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
                  number_of_qubits: int, 
                  nb_occ: int, 
                  transformation: str = "Jordan-Wigner",
-                 occupied_qubit_list: List[int],
                 ):
         """An ansatz implementation of the Hardware Efficient Ansatz
             used in 10.1021/acs.jctc.1c00091
@@ -51,7 +50,6 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         self._number_of_qubits = number_of_qubits
         self._nb_occ = nb_occ
         self._transformation = transformation
-        self._occupied_qubit_list=occupied_qubit_list
         print(number_of_qubits, nb_occ)
 
     def _build_rotational_subcircuit(
@@ -143,7 +141,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         )
         
         #Keep track of which qubits are occupied (X) in occupied_qubit_list (0 is unocupied, 1 occupied)
-        self.occupied_qubit_list=np.zeros(self.number_of_qubits)
+        occupied_qubit_list=np.zeros(self.number_of_qubits)
         
         print(circuit)
         
@@ -152,14 +150,14 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
             # extract occupied qubit index
             myval=gates.qubit_indices[0]
             # set occupied marker to 1 to represent its state
-            if (self.occupied_qubit_list[myval]==0):
+            if (occupied_qubit_list[myval]==0):
                 # Here we are just being careful that we dont erase a qubit that was already set
                 # was 0 and now flipped to 1
-                self.occupied_qubit_list[myval]=1
+                occupied_qubit_list[myval]=1
                 print("X operation on qubit: "+str(myval))
            
         print("full occupation map")
-        print(self.occupied_qubit_list)
+        print(occupied_qubit_list)
         
         if (self.number_of_layers>0):
             for layer_index in range(self.number_of_layers):
