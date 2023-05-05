@@ -50,7 +50,6 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         self._number_of_qubits = number_of_qubits
         self._nb_occ = nb_occ
         self._transformation = transformation
-        self._occupied_qubit_list = np.zeros(number_of_qubits)
         print(number_of_qubits, nb_occ)
 
     def _build_rotational_subcircuit(
@@ -136,7 +135,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
             print("RY-CNOT-RY ansatz HF start")
             print(circuit)
              #Keep track of which qubits are occupied (X) in occupied_qubit_list (0 is unocupied, 1 occupied)
-            self.occupied_qubit_list=np.zeros(self.number_of_qubits)
+            occupied_qubit_list=np.zeros(self.number_of_qubits)
         
             print(circuit)
         
@@ -148,11 +147,11 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
                 if (occupied_qubit_list[myval]==0):
                 # Here we are just being careful that we dont erase a qubit that was already set
                 # was 0 and now flipped to 1
-                    self.occupied_qubit_list[myval]=1
+                    occupied_qubit_list[myval]=1
                     print("X operation on qubit: "+str(myval))
            
             print("full occupation map")
-            print(self.occupied_qubit_list)
+            print(occupied_qubit_list)
 
         # Add RY(theta)
         circuit = self._build_rotational_subcircuit(
@@ -188,13 +187,6 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         """
         return self.number_of_qubits 
     
-    @property
-    def list_occupied_qubit(self) -> List[int]:
-        """
-        Returns a list of occupied qubits
-        """
-        return self.occupied_qubit_list 
-
     @property
     def symbols(self) -> List[sympy.Symbol]:
         """
