@@ -20,7 +20,6 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
     number_of_qubits = ansatz_property("number_of_qubits")
     nb_occ = ansatz_property("nb_occ")
     transformation = ansatz_property("transformation")
-    list_occupied_qubit = ansatz_property("list_occupied_qubit")
 
     def __init__(self, number_of_layers: int,
                  number_of_qubits: int, 
@@ -134,7 +133,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
                 transformation=self.transformation)
             print("RY-CNOT-RY ansatz HF start")
             print(circuit)
-             #Keep track of which qubits are occupied (X) in occupied_qubit_list (0 is unocupied, 1 occupied)
+            #Keep track of which qubits are occupied (X) in occupied_qubit_list (0 is unocupied, 1 occupied)
             occupied_qubit_list=np.zeros(self.number_of_qubits)
         
             print(circuit)
