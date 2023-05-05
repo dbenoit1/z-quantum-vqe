@@ -135,7 +135,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
             print("RY-CNOT-RY ansatz HF start")
             print(circuit)
              #Keep track of which qubits are occupied (X) in occupied_qubit_list (0 is unocupied, 1 occupied)
-            occupied_qubit_list=np.zeros(self.number_of_qubits)
+            self.occupied_qubit_list=np.zeros(self.number_of_qubits)
         
             print(circuit)
         
@@ -147,11 +147,11 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
                 if (occupied_qubit_list[myval]==0):
                 # Here we are just being careful that we dont erase a qubit that was already set
                 # was 0 and now flipped to 1
-                    occupied_qubit_list[myval]=1
+                    self.occupied_qubit_list[myval]=1
                     print("X operation on qubit: "+str(myval))
            
             print("full occupation map")
-            print(occupied_qubit_list)
+            print(self.occupied_qubit_list)
 
         # Add RY(theta)
         circuit = self._build_rotational_subcircuit(
