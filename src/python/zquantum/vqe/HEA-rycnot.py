@@ -50,6 +50,7 @@ class HEA_RY_CNOT_RY_Ansatz(Ansatz):
         self._number_of_qubits = number_of_qubits
         self._nb_occ = nb_occ
         self._transformation = transformation
+        self._occupied_qubit_list = np.zeros(number_of_qubits)
         print(number_of_qubits, nb_occ)
 
     def _build_rotational_subcircuit(
