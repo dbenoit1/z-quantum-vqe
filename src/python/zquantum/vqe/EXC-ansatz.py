@@ -8,7 +8,7 @@ from typing import List, Optional
 import numpy as np
 import sympy
 from overrides import overrides
-from zquantum.core.circuits import RXX, RYY, RZ , X, Circuit
+from zquantum.core.circuits import XY, RZ , X, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
@@ -28,7 +28,7 @@ class EXC_Ansatz(Ansatz):
                 ):
         """An ansatz implementation of the excitation preserving Ansatz
             used in 
-            -HF - Rz - [RXX+RYY]n - Rz
+            -HF - Rz - [XY]n - Rz
 
         Args:
             number_of_layers: number of layers in the circuit.
@@ -88,14 +88,13 @@ class EXC_Ansatz(Ansatz):
         for i in range(self.number_of_qubits):
             target=i+1
             if (target<self.number_of_qubits):
-                qubit_parameters = parameters[i : (i + 2)]
-                circuit_layer += RXX(qubit_parameters[0])(i, i+1)
-                circuit_layer += RYY(qubit_parameters[1])(i, i+1)
+                qubit_parameters = parameters[i : (i + 1)]
+                circuit_layer += XY(qubit_parameters[0])(i, i+1)
      
         # Add RZ(theta)
         circuit_layer = self._build_rotational_subcircuit(
             circuit_layer,
-            parameters[ 2* self.number_of_qubits : 3*self.number_of_qubits],
+            parameters[ self.number_of_qubits : 2*self.number_of_qubits],
         )
 
         return circuit_layer
@@ -162,7 +161,7 @@ class EXC_Ansatz(Ansatz):
         """
         Returns number of parameters in the layer.
         """
-        return 3*self.number_of_qubits 
+        return 2*self.number_of_qubits 
     
     @property
     def symbols(self) -> List[sympy.Symbol]:
