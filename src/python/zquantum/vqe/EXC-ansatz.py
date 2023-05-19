@@ -94,7 +94,7 @@ class EXC_Ansatz(Ansatz):
         # Add RZ(theta)
         circuit_layer = self._build_rotational_subcircuit(
             circuit_layer,
-            parameters[ self.number_of_qubits : 2*self.number_of_qubits],
+            parameters[ self.number_of_qubits-1 : (2*self.number_of_qubits)-1],
         )
 
         return circuit_layer
@@ -161,7 +161,7 @@ class EXC_Ansatz(Ansatz):
         """
         Returns number of parameters in the layer.
         """
-        return 2*self.number_of_qubits 
+        return self.number_of_qubits-1+self.number_of_qubits 
     
     @property
     def symbols(self) -> List[sympy.Symbol]:
