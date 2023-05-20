@@ -86,11 +86,11 @@ class EXC_Ansatz(Ansatz):
         # Add CNOT(x, x+1) for x in all(qubits)
         #Slightly more hardwired approach:
         for i in range(self.number_of_qubits):
-            target=i+1
+            target=i+2
             if (target<self.number_of_qubits):
                 qubit_parameters = parameters[i : (i + 1)]
-                circuit_layer += XX(qubit_parameters[0])(i, i+1)
-                circuit_layer += YY(qubit_parameters[0])(i, i+1)
+                circuit_layer += XX(qubit_parameters[0])(i, target)
+                circuit_layer += YY(qubit_parameters[0])(i, target)
      
         # Add RZ(theta)
         circuit_layer = self._build_rotational_subcircuit(
@@ -162,7 +162,7 @@ class EXC_Ansatz(Ansatz):
         """
         Returns number of parameters in the layer.
         """
-        return self.number_of_qubits-1+self.number_of_qubits 
+        return self.number_of_qubits-2+self.number_of_qubits 
     
     @property
     def symbols(self) -> List[sympy.Symbol]:
