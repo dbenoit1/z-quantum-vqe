@@ -95,7 +95,7 @@ class EXC_Ansatz(Ansatz):
         # Add RZ(theta)
         circuit_layer = self._build_rotational_subcircuit(
             circuit_layer,
-            parameters[ self.number_of_qubits-1 : (2*self.number_of_qubits)-1],
+            parameters[ self.number_of_qubits-2 : (2*self.number_of_qubits)-2],
         )
 
         return circuit_layer
