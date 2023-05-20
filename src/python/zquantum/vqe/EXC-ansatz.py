@@ -8,7 +8,7 @@ from typing import List, Optional
 import numpy as np
 import sympy
 from overrides import overrides
-from zquantum.core.circuits import XY, RZ , X, Circuit
+from zquantum.core.circuits import XX,YY, RZ , X, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
 from zquantum.core.interfaces.ansatz_utils import ansatz_property
 
@@ -28,7 +28,7 @@ class EXC_Ansatz(Ansatz):
                 ):
         """An ansatz implementation of the excitation preserving Ansatz
             used in 
-            -HF - Rz - [XY]n - Rz
+            -HF - Rz - [RXX+RYY (XY)]n - Rz
 
         Args:
             number_of_layers: number of layers in the circuit.
@@ -89,7 +89,8 @@ class EXC_Ansatz(Ansatz):
             target=i+1
             if (target<self.number_of_qubits):
                 qubit_parameters = parameters[i : (i + 1)]
-                circuit_layer += XY(qubit_parameters[0])(i, i+1)
+                circuit_layer += XX(qubit_parameters[0])(i, i+1)
+                circuit_layer += YY(qubit_parameters[0])(i, i+1)
      
         # Add RZ(theta)
         circuit_layer = self._build_rotational_subcircuit(
