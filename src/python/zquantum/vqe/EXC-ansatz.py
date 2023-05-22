@@ -130,19 +130,22 @@ class EXC_Ansatz(Ansatz):
             print("RZ-RXX+RYY-RZ ansatz HF start")
             print(circuit)
         
+        #REMOVED INITIAL RZ AS A FINAL RZ INSTEAD WORKS JUST AS WELL ON SIMS
         # Add RZ(theta)
-        circuit = self._build_rotational_subcircuit(
-            circuit, parameters[0: self.number_of_qubits]
-        )
+        #circuit = self._build_rotational_subcircuit(
+        #    circuit, parameters[0: self.number_of_qubits]
+        #)
         
         if (self.number_of_layers>0):
             for layer_index in range(self.number_of_layers):
                 circuit += self._build_circuit_layer(
-                parameters[self.number_of_qubits+
-                    layer_index
-                    * self.number_of_params_per_layer : self.number_of_qubits+(layer_index + 1)
-                    * self.number_of_params_per_layer
-                    ]
+                parameters[layer_index * self.number_of_params_per_layer : 
+                    (layer_index + 1) * self.number_of_params_per_layer ]    
+               # parameters[self.number_of_qubits+
+               #     layer_index
+               #     * self.number_of_params_per_layer : self.number_of_qubits+(layer_index + 1)
+               #     * self.number_of_params_per_layer
+               #     ]
                 )
                 
         #print circuit?
