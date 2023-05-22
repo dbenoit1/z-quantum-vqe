@@ -28,7 +28,7 @@ class EXC_Ansatz(Ansatz):
                 ):
         """An ansatz implementation of the excitation preserving Ansatz
             used in 
-            -HF - Rz - [RXX+RYY (XY)]n - Rz
+            -HF - [RXX+RYY (XY)- Rz]n 
 
         Args:
             number_of_layers: number of layers in the circuit.
