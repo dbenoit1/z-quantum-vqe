@@ -179,9 +179,8 @@ class EXC_Ansatz(Ansatz):
         ]
 
     
-    ### ASWAP ANSATZ CLASS
-    
-    class ASWAP_Ansatz(Ansatz):
+### ASWAP ANSATZ CLASS
+class ASWAP_Ansatz(Ansatz):
 
     supports_parametrized_circuits = True
     number_of_qubits = ansatz_property("number_of_qubits")
