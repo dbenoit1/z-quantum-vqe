@@ -177,3 +177,144 @@ class EXC_Ansatz(Ansatz):
         return [
             sympy.Symbol("theta_{}".format(i)) for i in range(self.number_of_params)
         ]
+
+    
+    ### ASWAP ANSATZ CLASS
+    
+    class ASWAP_Ansatz(Ansatz):
+
+    supports_parametrized_circuits = True
+    number_of_qubits = ansatz_property("number_of_qubits")
+    nb_occ = ansatz_property("nb_occ")
+    transformation = ansatz_property("transformation")
+
+    def __init__(self, number_of_layers: int,
+                 number_of_qubits: int, 
+                 nb_occ: int, 
+                 transformation: str = "Jordan-Wigner",
+                ):
+        """An ansatz implementation of the ASWAP excitation preserving Ansatz
+            used in Gard+ 2020 (https://doi.org/10.1038/s41534-019-0240-1)
+            
+            -HF - [Cnot - Ry Rz - Cnot - RZ Ry - Cnot]n (A gate) 
+
+        Args:
+            number_of_layers: number of layers in the circuit.
+            number_of_qubits: number of qubits in the circuit.
+            nb_occ: number of occupied states (spin orbitals, for example)
+            tranformation: Mapping transformation (JW/BK/BK-2qbr), default JW
+
+        Attributes:
+            number_of_qubits: See Args
+            number_of_layers: See Args
+            nb_occ: See Args
+            transformation: string
+        """
+        if number_of_layers < 0:
+            raise ValueError("number_of_layers must be a positive integer")
+        super().__init__(number_of_layers)
+        assert number_of_qubits % 2 == 0
+        self._number_of_qubits = number_of_qubits
+        self._nb_occ = nb_occ
+        self._transformation = transformation
+        print(number_of_qubits, nb_occ)
+
+    def _build_circuit_layer(self, parameters: np.ndarray) -> Circuit:
+        """Build circuit layer for the ASWAP hardware efficient ansatz
+
+        Args:
+            parameters: The variational parameters (or symbolic parameters)
+
+        Returns:
+            Circuit containing a single layer of the Hardware Efficient Ansatz
+        """
+        circuit_layer = Circuit()
+        
+        for i in range(self.number_of_qubits):
+            target=i+2
+            if (target<self.number_of_qubits):
+                qubit_parameters = parameters[i : (i + 2)]
+                #Ry rotation parameter
+                t=qubit_parameters[0]+np.pi/2.
+                #Rz rotation parameter
+                p=qubit_parameters[1]+np.pi
+
+                #inverted CNOT
+                circuit_layer += CNOT(target,i)
+                
+                #R(t,p) dagger = Ry(-t) Rz(-p)
+                circuit_layer += RY(-t)(target)
+                circuit_layer += RZ(-p)(target)
+                
+                #standard CNOT
+                circuit_layer += CNOT(i,target)
+                
+                #R(t,p) = Rz(p) Ry(t)
+                circuit_layer += RZ(p)(target)
+                circuit_layer += RY(t)(target)
+                
+                #inverted CNOT
+                circuit_layer += CNOT(target,i)
+  
+        return circuit_layer
+
+    @overrides
+    def _generate_circuit(self, parameters: Optional[np.ndarray] = None) -> Circuit:
+        """Builds the ansatz circuit (based on: )
+
+        Args:
+            params (numpy.ndarray): input parameters of the circuit (1d array).
+
+        Returns:
+            Circuit
+        """
+        if parameters is None:
+            parameters = np.asarray(self.symbols, dtype=object)
+
+        assert len(parameters) == self.number_of_params
+
+        circuit = Circuit()
+                
+        #Start with HF state is number of electrons are given
+        if (self.nb_occ>0):
+            original_nb_qubits=self.number_of_qubits
+            circuit += build_hartree_fock_circuit(number_of_qubits=original_nb_qubits,
+                number_of_alpha_electrons=self.nb_occ//2,number_of_beta_electrons=self.nb_occ//2,
+                transformation=self.transformation)
+            print("ASWAP ansatz HF start")
+            print(circuit)
+        
+        if (self.number_of_layers>0):
+            for layer_index in range(self.number_of_layers):
+                circuit += self._build_circuit_layer(
+                parameters[layer_index * self.number_of_params_per_layer : 
+                    (layer_index + 1) * self.number_of_params_per_layer ]    
+                
+        print(circuit)
+        
+        return circuit
+
+    @property
+    def number_of_params(self) -> int:
+        """
+        Returns number of parameters in the ansatz.
+        """
+        return self.number_of_params_per_layer * self.number_of_layers
+
+    @property
+    def number_of_params_per_layer(self) -> int:
+        """
+        Returns number of parameters in the layer.
+        """
+        return (self.number_of_qubits-2)*2 
+    
+    @property
+    def symbols(self) -> List[sympy.Symbol]:
+        """
+        Returns a list of symbolic parameters used for creating the ansatz.
+        The order of the symbols should match the order in which parameters
+        should be passed for creating executable circuit.
+        """
+        return [
+            sympy.Symbol("theta_{}".format(i)) for i in range(self.number_of_params)
+        ]
