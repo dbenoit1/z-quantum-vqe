@@ -232,7 +232,7 @@ class ASWAP_Ansatz(Ansatz):
         for i in range(self.number_of_qubits):
             target=i+2
             if (target<self.number_of_qubits):
-                qubit_parameters = parameters[2*i : (2*i + 1)]
+                qubit_parameters = parameters[2*i : (2*i + 2)]
                 #Ry rotation parameter
                 t=qubit_parameters[0]+np.pi/2.
                 #Rz rotation parameter
