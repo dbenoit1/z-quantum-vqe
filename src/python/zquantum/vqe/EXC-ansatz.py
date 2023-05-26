@@ -287,7 +287,7 @@ class ASWAP_Ansatz(Ansatz):
             for layer_index in range(self.number_of_layers):
                 circuit += self._build_circuit_layer(
                 parameters[layer_index * self.number_of_params_per_layer : 
-                    (layer_index + 1) * self.number_of_params_per_layer ]    
+                    (layer_index + 1) * self.number_of_params_per_layer ]  )  
                 
         print(circuit)
         
