@@ -397,7 +397,7 @@ class RASWAP_Ansatz(Ansatz):
                 circuit_layer += CNOT(target,i)
                 u+=1
                 
-          for i in range(2,self.number_of_qubits):
+        for i in range(2,self.number_of_qubits):
             target=i+2
             if (target<self.number_of_qubits):
                 qubit_parameters = parameters[u : (u + 1)]
