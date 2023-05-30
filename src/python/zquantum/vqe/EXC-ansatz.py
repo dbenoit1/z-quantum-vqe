@@ -376,9 +376,10 @@ class RASWAP_Ansatz(Ansatz):
         """
         circuit_layer = Circuit()
         u=0
+        used=[]
         for i in range(self.number_of_qubits):
             target=i+2
-            if (target<self.number_of_qubits):
+            if (target<self.number_of_qubits) and (i is not in used):
                 qubit_parameters = parameters[u : (u + 1)]
                 #Ry rotation parameter
                 t=qubit_parameters[0]+np.pi/2.
@@ -396,10 +397,12 @@ class RASWAP_Ansatz(Ansatz):
                 #inverted CNOT
                 circuit_layer += CNOT(target,i)
                 u+=1
-                
+                used.append(i)
+                used.append(target)
+        used=[]
         for i in range(2,self.number_of_qubits):
             target=i+2
-            if (target<self.number_of_qubits):
+            if (target<self.number_of_qubits) and (i is not in used):
                 qubit_parameters = parameters[u : (u + 1)]
                 #Ry rotation parameter
                 t=qubit_parameters[0]+np.pi/2.
@@ -417,6 +420,8 @@ class RASWAP_Ansatz(Ansatz):
                 #inverted CNOT
                 circuit_layer += CNOT(target,i)
                 u+=1
+                used.append(i)
+                used.append(target)
         return circuit_layer
 
     @overrides
