@@ -379,7 +379,7 @@ class RASWAP_Ansatz(Ansatz):
         used=[]
         for i in range(self.number_of_qubits):
             target=i+2
-            if (target<self.number_of_qubits) and (i is not in used):
+            if (target<self.number_of_qubits) and (i not in used):
                 qubit_parameters = parameters[u : (u + 1)]
                 #Ry rotation parameter
                 t=qubit_parameters[0]+np.pi/2.
@@ -402,7 +402,7 @@ class RASWAP_Ansatz(Ansatz):
         used=[]
         for i in range(2,self.number_of_qubits):
             target=i+2
-            if (target<self.number_of_qubits) and (i is not in used):
+            if (target<self.number_of_qubits) and (i not in used):
                 qubit_parameters = parameters[u : (u + 1)]
                 #Ry rotation parameter
                 t=qubit_parameters[0]+np.pi/2.
