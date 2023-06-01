@@ -422,6 +422,22 @@ class RASWAP_Ansatz(Ansatz):
                 u+=1
                 used.append(i)
                 used.append(target)
+        #Add a locked gate to layer B (0,0)
+        origin=1 #fist beta spin
+        target=self.number_of_qubits-2 # last alpha orbital
+        #inverted CNOT
+        circuit_layer += CNOT(target,origin)
+        #R(t,p) dagger = Ry(-t) Rz(-p)
+        circuit_layer += RY(-np.pi/2.)(target)
+        circuit_layer += RZ(-np.pi)(target)
+        #standard CNOT
+        circuit_layer += CNOT(origin,target)
+        #R(t,p) = Rz(p) Ry(t)
+        circuit_layer += RZ(np.pi)(target)
+        circuit_layer += RY(np.pi/2.)(target)
+        #inverted CNOT
+        circuit_layer += CNOT(target,origin)
+
         return circuit_layer
 
     @overrides
