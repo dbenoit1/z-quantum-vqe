@@ -366,7 +366,7 @@ class RASWAP_Ansatz(Ansatz):
         print(number_of_qubits, nb_occ)
         
     def _aswap_gate(
-        self, circuit: Circuit, parameters: origin, target, theta, phi
+        self, circuit: Circuit, origin: int, target: int, theta: float, phi: float
     ) -> Circuit:
         #Ry rotation parameter
         t=theta+np.pi/2.
