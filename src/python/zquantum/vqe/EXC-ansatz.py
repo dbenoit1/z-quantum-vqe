@@ -364,6 +364,27 @@ class RASWAP_Ansatz(Ansatz):
         self._nb_occ = nb_occ
         self._transformation = transformation
         print(number_of_qubits, nb_occ)
+        
+    def _aswap_gate(
+        self, circuit: Circuit, parameters: origin, target, theta, phi
+    ) -> Circuit:
+        #Ry rotation parameter
+        t=theta+np.pi/2.
+        #Rz rotation parameter
+        p=phi+np.pi
+        #inverted CNOT
+        circuit += CNOT(target,origin)
+        #R(t,p) dagger = Ry(-t) Rz(-p)
+        circuit += RY(-t)(target)
+        circuit += RZ(-p)(target)
+        #standard CNOT
+        circuit += CNOT(origin,target)
+        #R(t,p) = Rz(p) Ry(t)
+        circuit += RZ(p)(target)
+        circuit += RY(t)(target)
+        #inverted CNOT
+        circui += CNOT(target,origin)
+    return circuit
 
     def _build_circuit_layer(self, parameters: np.ndarray) -> Circuit:
         """Build circuit layer for the ASWAP hardware efficient ansatz
@@ -381,21 +402,24 @@ class RASWAP_Ansatz(Ansatz):
             target=i+2
             if (target<self.number_of_qubits) and (i not in used):
                 qubit_parameters = parameters[u : (u + 1)]
+                
+                circuit_layer=self._aswap_gate(circuit_layer,i,target,qubit_parameters[0],0)
+
                 #Ry rotation parameter
-                t=qubit_parameters[0]+np.pi/2.
+#                t=qubit_parameters[0]+np.pi/2.
 #REAL ASWAP GATE LAYER A
                 #inverted CNOT
-                circuit_layer += CNOT(target,i)
+ #               circuit_layer += CNOT(target,i)
                 #R(t,p) dagger = Ry(-t) Rz(-p)
-                circuit_layer += RY(-t)(target)
-                circuit_layer += RZ(-np.pi)(target)
+ #               circuit_layer += RY(-t)(target)
+ #               circuit_layer += RZ(-np.pi)(target)
                 #standard CNOT
-                circuit_layer += CNOT(i,target)
+ #               circuit_layer += CNOT(i,target)
                 #R(t,p) = Rz(p) Ry(t)
-                circuit_layer += RZ(np.pi)(target)
-                circuit_layer += RY(t)(target)
+ #               circuit_layer += RZ(np.pi)(target)
+  #              circuit_layer += RY(t)(target)
                 #inverted CNOT
-                circuit_layer += CNOT(target,i)
+  #              circuit_layer += CNOT(target,i)
                 u+=1
                 used.append(i)
                 used.append(target)
