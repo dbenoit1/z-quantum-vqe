@@ -397,70 +397,33 @@ class RASWAP_Ansatz(Ansatz):
         """
         circuit_layer = Circuit()
         u=0
+      
+      #REAL ASWAP GATE LAYER A                
         used=[]
         for i in range(self.number_of_qubits):
             target=i+2
             if (target<self.number_of_qubits) and (i not in used):
                 qubit_parameters = parameters[u : (u + 1)]
-                
                 circuit_layer=self._aswap_gate(circuit_layer,i,target,qubit_parameters[0],0)
-
-                #Ry rotation parameter
-#                t=qubit_parameters[0]+np.pi/2.
-#REAL ASWAP GATE LAYER A
-                #inverted CNOT
- #               circuit_layer += CNOT(target,i)
-                #R(t,p) dagger = Ry(-t) Rz(-p)
- #               circuit_layer += RY(-t)(target)
- #               circuit_layer += RZ(-np.pi)(target)
-                #standard CNOT
- #               circuit_layer += CNOT(i,target)
-                #R(t,p) = Rz(p) Ry(t)
- #               circuit_layer += RZ(np.pi)(target)
-  #              circuit_layer += RY(t)(target)
-                #inverted CNOT
-  #              circuit_layer += CNOT(target,i)
                 u+=1
                 used.append(i)
                 used.append(target)
+                
+      #REAL ASWAP GATE LAYER B
         used=[]
         for i in range(2,self.number_of_qubits):
             target=i+2
             if (target<self.number_of_qubits) and (i not in used):
                 qubit_parameters = parameters[u : (u + 1)]
-                #Ry rotation parameter
-                t=qubit_parameters[0]+np.pi/2.
-#REAL ASWAP GATE LAYER B
-                #inverted CNOT
-                circuit_layer += CNOT(target,i)
-                #R(t,p) dagger = Ry(-t) Rz(-p)
-                circuit_layer += RY(-t)(target)
-                circuit_layer += RZ(-np.pi)(target)
-                #standard CNOT
-                circuit_layer += CNOT(i,target)
-                #R(t,p) = Rz(p) Ry(t)
-                circuit_layer += RZ(np.pi)(target)
-                circuit_layer += RY(t)(target)
-                #inverted CNOT
-                circuit_layer += CNOT(target,i)
+                circuit_layer=self._aswap_gate(circuit_layer,i,target,qubit_parameters[0],0)
                 u+=1
                 used.append(i)
                 used.append(target)
-        #Add a locked gate to layer B (0,0)
+                
+      #Add a locked gate to layer B (0,0)
         origin=1 #fist beta spin
         target=self.number_of_qubits-2 # last alpha orbital
-        #inverted CNOT
-        circuit_layer += CNOT(target,origin)
-        #R(t,p) dagger = Ry(-t) Rz(-p)
-        circuit_layer += RY(-np.pi/2.)(target)
-        circuit_layer += RZ(-np.pi)(target)
-        #standard CNOT
-        circuit_layer += CNOT(origin,target)
-        #R(t,p) = Rz(p) Ry(t)
-        circuit_layer += RZ(np.pi)(target)
-        circuit_layer += RY(np.pi/2.)(target)
-        #inverted CNOT
-        circuit_layer += CNOT(target,origin)
+        circuit_layer=self._aswap_gate(circuit_layer,i,target,0,0)
 
         return circuit_layer
 
