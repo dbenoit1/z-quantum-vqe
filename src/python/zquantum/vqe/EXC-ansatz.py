@@ -423,7 +423,7 @@ class RASWAP_Ansatz(Ansatz):
       #Add a locked gate to layer B (0,0)
         origin=1 #fist beta spin
         target=self.number_of_qubits-2 # last alpha orbital
-        circuit_layer=self._aswap_gate(circuit_layer,i,target,0,0)
+        circuit_layer=self._aswap_gate(circuit_layer,origin,target,0,0)
 
         return circuit_layer
 
