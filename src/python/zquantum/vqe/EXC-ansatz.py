@@ -383,8 +383,8 @@ class RASWAP_Ansatz(Ansatz):
         circuit += RZ(p)(target)
         circuit += RY(t)(target)
         #inverted CNOT
-        circui += CNOT(target,origin)
-    return circuit
+        circuit += CNOT(target,origin)
+        return circuit
 
     def _build_circuit_layer(self, parameters: np.ndarray) -> Circuit:
         """Build circuit layer for the ASWAP hardware efficient ansatz
