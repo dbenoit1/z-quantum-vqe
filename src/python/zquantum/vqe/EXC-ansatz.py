@@ -357,9 +357,9 @@ class RASWAP_Ansatz(Ansatz):
         """
         
         print("number of qubits or spin orbitals",number_of_qubits)
-        npar=int(scipy.special.binom(n,2))-1
-        maxlayers=npar//(n-2)
-        extras = npar%(n-2)
+        npar=int(scipy.special.binom(number_of_qubits,nb_occ))-1
+        maxlayers=npar//(number_of_qubits-2)
+        extras = npar%(number_of_qubits-2)
         print("total number of parameters needed",npar)
         print("number of complete layers",maxlayers)
         print("number of left-over variables",extras)
