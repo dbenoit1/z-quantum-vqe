@@ -7,6 +7,7 @@ from typing import List, Optional
 
 import numpy as np
 import sympy
+import scipy.special 
 from overrides import overrides
 from zquantum.core.circuits import XX,YY, RZ ,RY, CNOT, X, Circuit
 from zquantum.core.interfaces.ansatz import Ansatz
@@ -354,6 +355,15 @@ class RASWAP_Ansatz(Ansatz):
             nb_occ: See Args
             transformation: string
         """
+        
+        print("number of qubits or spin orbitals",number_of_qubits)
+        npar=int(scipy.special.binom(n,2))-1
+        maxlayers=npar//(n-2)
+        extras = npar%(n-2)
+        print("total number of parameters needed",npar)
+        print("number of complete layers",maxlayers)
+        print("number of left-over variables",extras)
+       
         if number_of_layers < 0:
             raise ValueError("number_of_layers must be a positive integer")
         super().__init__(number_of_layers)
@@ -364,6 +374,7 @@ class RASWAP_Ansatz(Ansatz):
         self._nb_occ = nb_occ
         self._transformation = transformation
         print(number_of_qubits, nb_occ)
+      
         
     def _aswap_gate(
         self, circuit: Circuit, origin: int, target: int, theta: float, phi: float
