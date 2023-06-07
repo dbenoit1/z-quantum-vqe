@@ -490,7 +490,7 @@ class RASWAP_Ansatz(Ansatz):
         """
         Returns number of parameters in the layer.
         """
-        return (self.number_of_qubits-2)+(self.number_of_qubits-4)
+        return (self.number_of_qubits//2)+(self.number_of_qubits//2)-2
     
     @property
     def symbols(self) -> List[sympy.Symbol]:
