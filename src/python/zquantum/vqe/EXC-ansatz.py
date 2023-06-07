@@ -372,11 +372,6 @@ class RASWAP_Ansatz(Ansatz):
             print("number of complete layers",maxlayers)
             print("number of left-over variables",extras)
             number_of_layers=maxlayers
-            #dealing with any left-over gates needed
-            suppA=extras
-            lockedA=number_of_qubits//2-extras
-            print("extra gates",suppA)
-            print("locked gates",lockedA)
             
         super().__init__(number_of_layers)
         if transformation not in ["Jordan-Wigner"]:
@@ -385,6 +380,7 @@ class RASWAP_Ansatz(Ansatz):
         self._number_of_qubits = number_of_qubits
         self._nb_occ = nb_occ
         self._transformation = transformation
+        self._extras=extras
         print(number_of_qubits, nb_occ)
       
         
@@ -483,7 +479,12 @@ class RASWAP_Ansatz(Ansatz):
                     (layer_index + 1) * self.number_of_params_per_layer ]  ) 
             #adding any extra gates needed to complete the circuit
             #these will be suppA a gates and a few locked gates
-            if extras >0:
+            if self.extras >0:
+               #dealing with any left-over gates needed
+               suppA=self.extras
+               lockedA=self.number_of_qubits//2-suppA
+               print("extra gates",suppA)
+               print("locked gates",lockedA)
                #REAL ASWAP GATE LAYER A                
                u=self.number_of_layers*self.number_of_params_per_layer
                used=[]
