@@ -357,21 +357,9 @@ class RASWAP_Ansatz(Ansatz):
         """
         #assuming initially that there are no extra gates to add
         #this will be re-calculated later if necessary
-        extras=0
         
         if number_of_layers < 0:
             raise ValueError("number_of_layers must be a positive integer")
-            
-        if number_of_layers == 0:
-            print("automatic parametrisation using heuristics from Gard+2020")
-            print("number of qubits or spin orbitals",number_of_qubits)
-            npar=int(scipy.special.binom(number_of_qubits,nb_occ))-1
-            maxlayers=npar//(number_of_qubits-2)
-            extras = npar%(number_of_qubits-2)
-            print("total number of parameters needed",npar)
-            print("number of complete layers",maxlayers)
-            print("number of left-over variables",extras)
-            number_of_layers=maxlayers
             
         super().__init__(number_of_layers)
         if transformation not in ["Jordan-Wigner"]:
@@ -380,7 +368,6 @@ class RASWAP_Ansatz(Ansatz):
         self._number_of_qubits = number_of_qubits
         self._nb_occ = nb_occ
         self._transformation = transformation
-        self._extras=extras
         print(number_of_qubits, nb_occ)
       
         
@@ -471,6 +458,18 @@ class RASWAP_Ansatz(Ansatz):
                 transformation=self.transformation)
             print("ASWAP ansatz HF start")
             print(circuit)
+            
+        extras=0
+        if self.number_of_layers == 0:
+            print("automatic parametrisation using heuristics from Gard+2020")
+            print("number of qubits or spin orbitals",self.number_of_qubits)
+            npar=int(scipy.special.binom(self.number_of_qubits,self.nb_occ))-1
+            maxlayers=npar//(self.number_of_qubits-2)
+            extras = npar%(self.number_of_qubits-2)
+            print("total number of parameters needed",npar)
+            print("number of complete layers",maxlayers)
+            print("number of left-over variables",extras)
+            self.number_of_layers=maxlayers
         
         if (self.number_of_layers>0):
             for layer_index in range(self.number_of_layers):
