@@ -374,7 +374,7 @@ class RASWAP_Ansatz(Ansatz):
             number_of_layers=maxlayers
             #dealing with any left-over gates needed
             suppA=extras
-            lockedA=n//2-extras
+            lockedA=number_of_qubits//2-extras
             print("extra gates",suppA)
             print("locked gates",lockedA)
             
