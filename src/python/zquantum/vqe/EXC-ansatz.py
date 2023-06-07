@@ -360,7 +360,6 @@ class RASWAP_Ansatz(Ansatz):
         
         if number_of_layers < 0:
             raise ValueError("number_of_layers must be a positive integer")
-            
         super().__init__(number_of_layers)
         if transformation not in ["Jordan-Wigner"]:
             raise RuntimeError(f"ONLY WORKS FOR JORDAN-WIGNER TRANSFORMATION, BUT YOU REQUESTED {transformation}")
@@ -460,7 +459,7 @@ class RASWAP_Ansatz(Ansatz):
             print(circuit)
             
         extras=0
-        if self.number_of_layers == 0:
+        if (self.number_of_layers==0):
             print("automatic parametrisation using heuristics from Gard+2020")
             print("number of qubits or spin orbitals",self.number_of_qubits)
             npar=int(scipy.special.binom(self.number_of_qubits,self.nb_occ))-1
@@ -478,9 +477,9 @@ class RASWAP_Ansatz(Ansatz):
                     (layer_index + 1) * self.number_of_params_per_layer ]  ) 
             #adding any extra gates needed to complete the circuit
             #these will be suppA a gates and a few locked gates
-            if self.extras >0:
+            if (extras>0):
                #dealing with any left-over gates needed
-               suppA=self.extras
+               suppA=extras
                lockedA=self.number_of_qubits//2-suppA
                print("extra gates",suppA)
                print("locked gates",lockedA)
