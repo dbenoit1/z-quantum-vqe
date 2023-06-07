@@ -355,17 +355,21 @@ class RASWAP_Ansatz(Ansatz):
             nb_occ: See Args
             transformation: string
         """
-        
-        print("number of qubits or spin orbitals",number_of_qubits)
-        npar=int(scipy.special.binom(number_of_qubits,nb_occ))-1
-        maxlayers=npar//(number_of_qubits-2)
-        extras = npar%(number_of_qubits-2)
-        print("total number of parameters needed",npar)
-        print("number of complete layers",maxlayers)
-        print("number of left-over variables",extras)
        
         if number_of_layers < 0:
             raise ValueError("number_of_layers must be a positive integer")
+            
+        if number_of_layers == 0:
+            print("automatic parametrisation using heuristics from Gard+2020")
+            print("number of qubits or spin orbitals",number_of_qubits)
+            npar=int(scipy.special.binom(number_of_qubits,nb_occ))-1
+            maxlayers=npar//(number_of_qubits-2)
+            extras = npar%(number_of_qubits-2)
+            print("total number of parameters needed",npar)
+            print("number of complete layers",maxlayers)
+            print("number of left-over variables",extras)
+            number_of_layers=maxlayers
+            
         super().__init__(number_of_layers)
         if transformation not in ["Jordan-Wigner"]:
             raise RuntimeError(f"ONLY WORKS FOR JORDAN-WIGNER TRANSFORMATION, BUT YOU REQUESTED {transformation}")
