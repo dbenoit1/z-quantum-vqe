@@ -355,7 +355,10 @@ class RASWAP_Ansatz(Ansatz):
             nb_occ: See Args
             transformation: string
         """
-       
+        #assuming initially that there are no extra gates to add
+        #this will be re-calculated later if necessary
+        extras=0
+        
         if number_of_layers < 0:
             raise ValueError("number_of_layers must be a positive integer")
             
@@ -369,6 +372,11 @@ class RASWAP_Ansatz(Ansatz):
             print("number of complete layers",maxlayers)
             print("number of left-over variables",extras)
             number_of_layers=maxlayers
+            #dealing with any left-over gates needed
+            suppA=extras
+            lockedA=n//2-extras
+            print("extra gates",suppA)
+            print("locked gates",lockedA)
             
         super().__init__(number_of_layers)
         if transformation not in ["Jordan-Wigner"]:
@@ -472,7 +480,30 @@ class RASWAP_Ansatz(Ansatz):
             for layer_index in range(self.number_of_layers):
                 circuit += self._build_circuit_layer(
                 parameters[layer_index * self.number_of_params_per_layer : 
-                    (layer_index + 1) * self.number_of_params_per_layer ]  )  
+                    (layer_index + 1) * self.number_of_params_per_layer ]  ) 
+            #adding any extra gates needed to complete the circuit
+            #these will be suppA a gates and a few locked gates
+            if extras >0:
+               #REAL ASWAP GATE LAYER A                
+               u=self.number_of_layers*self.number_of_params_per_layer
+               used=[]
+               for i in range(self.number_of_qubits):
+                   target=i+2
+                   if (target<self.number_of_qubits) and (i not in used) and (suppA>0):
+                        qubit_parameters = parameters[u : (u + 1)]
+                        circuit_layer=self._aswap_gate(circuit_layer,i,target,qubit_parameters[0],0)
+                        used.append(i)
+                        used.append(target)
+                        u+=1
+                        suppA-=1
+                   else:
+                        #locked A
+                        circuit_layer=self._aswap_gate(circuit_layer,i,target,0,0)
+                        lockedA-=1
+            if (suppA ==0) and (lockedA==0):
+                print("Completed OK - done")
+            else:
+                print("error in determining extra parameters")
                 
         print(circuit)
         
