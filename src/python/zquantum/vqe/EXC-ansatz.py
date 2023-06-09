@@ -507,12 +507,12 @@ class RASWAP_Ansatz(Ansatz):
                         used.append(target)
                         u+=1
                         suppA-=1
-                        print("u",u,"suppA",suppA,"lockedA",LockedA)
+                        print("u",u,"suppA",suppA,"lockedA",lockedA)
                    else:
                         #locked A
                         circuit_end_layer=self._aswap_gate(circuit_end_layer,i,target,0,0)
                         lockedA-=1
-                        print("u",u,"suppA",suppA,"lockedA",LockedA)
+                        print("u",u,"suppA",suppA,"lockedA",lockedA)
             if (suppA ==0) and (lockedA==0):
                 print("Completed OK - done")
             else:
