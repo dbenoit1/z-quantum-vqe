@@ -499,7 +499,8 @@ class RASWAP_Ansatz(Ansatz):
                used=[]
                for i in range(self.number_of_qubits):
                    target=i+2
-                   if (target<self.number_of_qubits) and (i not in used) and (suppA>0):
+                   if (target<self.number_of_qubits) and (i not in used):
+                        if (suppA>0):
                         qubit_parameters = parameters[u : (u + 1)]
                         print("qbit paramerters",qubit_parameters)
                         circuit_end_layer=self._aswap_gate(circuit_end_layer,i,target,qubit_parameters[0],0)
@@ -508,7 +509,7 @@ class RASWAP_Ansatz(Ansatz):
                         u+=1
                         suppA-=1
                         print("u",u,"suppA",suppA,"lockedA",lockedA)
-                   else:
+                        else:
                         #locked A
                         circuit_end_layer=self._aswap_gate(circuit_end_layer,i,target,0,0)
                         lockedA-=1
