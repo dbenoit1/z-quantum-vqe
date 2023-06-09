@@ -442,6 +442,20 @@ class RASWAP_Ansatz(Ansatz):
         Returns:
             Circuit
         """
+        #work out the number of layer needed if this was not specified.
+        extras=0
+        if (self.number_of_layers==0):
+            print("automatic parametrisation using heuristics from Gard+2020")
+            print("number of qubits or spin orbitals",self.number_of_qubits)
+            npar=int(scipy.special.binom(self.number_of_qubits,self.nb_occ))-1
+            maxlayers=npar//(self.number_of_qubits-2)
+            extras = npar%(self.number_of_qubits-2)
+            print("total number of parameters needed",npar)
+            print("number of complete layers",maxlayers)
+            print("number of left-over variables",extras)
+            self.number_of_layers=maxlayers
+            print("nlayer changed to",self.number_of_layer)
+        
         if parameters is None:
             parameters = np.asarray(self.symbols, dtype=object)
 
@@ -457,20 +471,6 @@ class RASWAP_Ansatz(Ansatz):
                 transformation=self.transformation)
             print("ASWAP ansatz HF start")
             print(circuit)
-            
-        extras=0
-        if (self.number_of_layers==0):
-            print("automatic parametrisation using heuristics from Gard+2020")
-            print("number of qubits or spin orbitals",self.number_of_qubits)
-            npar=int(scipy.special.binom(self.number_of_qubits,self.nb_occ))-1
-            maxlayers=npar//(self.number_of_qubits-2)
-            extras = npar%(self.number_of_qubits-2)
-            print("total number of parameters needed",npar)
-            print("number of complete layers",maxlayers)
-            print("number of left-over variables",extras)
-            self.number_of_layers=maxlayers
-            print("nlayer changed to",self.number_of_layer)
-
         
         if (self.number_of_layers>0):
             for layer_index in range(self.number_of_layers):
