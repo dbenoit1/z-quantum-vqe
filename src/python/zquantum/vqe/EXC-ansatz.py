@@ -487,11 +487,13 @@ class RASWAP_Ansatz(Ansatz):
                print("locked gates",lockedA)
                #REAL ASWAP GATE LAYER A                
                u=self.number_of_layers*self.number_of_params_per_layer
+               print("u is now",u)
                used=[]
                for i in range(self.number_of_qubits):
                    target=i+2
                    if (target<self.number_of_qubits) and (i not in used) and (suppA>0):
                         qubit_parameters = parameters[u : (u + 1)]
+                        print("qbit paramerters",qubit_parameters)
                         circuit+=self._aswap_gate(circuit,i,target,qubit_parameters[0],0)
                         used.append(i)
                         used.append(target)
