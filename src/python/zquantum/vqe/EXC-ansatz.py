@@ -454,7 +454,7 @@ class RASWAP_Ansatz(Ansatz):
             print("number of complete layers",maxlayers)
             print("number of left-over variables",extras)
             self.number_of_layers=maxlayers
-            print("nlayer changed to",self.number_of_layer)
+            print("nlayer changed to",self.number_of_layers)
         
         if parameters is None:
             parameters = np.asarray(self.symbols, dtype=object)
