@@ -468,7 +468,7 @@ class RASWAP_Ansatz(Ansatz):
             print("total number of parameters needed",npar)
             print("number of complete layers",maxlayers)
             print("number of left-over variables",extras)
-            self.number_of_layers=maxlayers
+            self._number_of_layers=maxlayers
         
         if (self.number_of_layers>0):
             for layer_index in range(self.number_of_layers):
