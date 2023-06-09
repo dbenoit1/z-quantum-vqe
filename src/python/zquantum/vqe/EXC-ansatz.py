@@ -482,14 +482,17 @@ class RASWAP_Ansatz(Ansatz):
                 circuit += self._build_circuit_layer(
                 parameters[layer_index * self.number_of_params_per_layer : 
                     (layer_index + 1) * self.number_of_params_per_layer ]  ) 
+                
             #adding any extra gates needed to complete the circuit
             #these will be suppA a gates and a few locked gates
+            
             if (extras>0):
                #dealing with any left-over gates needed
                suppA=extras
                lockedA=self.number_of_qubits//2-suppA
                print("extra gates",suppA)
                print("locked gates",lockedA)
+               circuit_end_layer = Circuit()
                #REAL ASWAP GATE LAYER A                
                u=self.number_of_layers*self.number_of_params_per_layer
                print("u is now",u)
@@ -499,20 +502,24 @@ class RASWAP_Ansatz(Ansatz):
                    if (target<self.number_of_qubits) and (i not in used) and (suppA>0):
                         qubit_parameters = parameters[u : (u + 1)]
                         print("qbit paramerters",qubit_parameters)
-                        circuit+=self._aswap_gate(circuit,i,target,qubit_parameters[0],0)
+                        circuit_end_layer=self._aswap_gate(circuit_end_layer,i,target,qubit_parameters[0],0)
                         used.append(i)
                         used.append(target)
                         u+=1
                         suppA-=1
+                        print("u",u,"suppA",suppA,"lockedA",LockedA)
                    else:
                         #locked A
-                        circuit+=self._aswap_gate(circuit,i,target,0,0)
+                        circuit_end_layer=self._aswap_gate(circuit_end_layer,i,target,0,0)
                         lockedA-=1
+                        print("u",u,"suppA",suppA,"lockedA",LockedA)
             if (suppA ==0) and (lockedA==0):
                 print("Completed OK - done")
             else:
                 print("error in determining extra parameters")
-                
+                              
+        #adding the last layer 
+        circuit+=circuit_end_layer
         print(circuit)
         
         return circuit
